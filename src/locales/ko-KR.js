@@ -525,6 +525,8 @@ export default {
     siteIcon: '사이트 아이콘',
     ownerName: '사이트 이름',
     logoUrl: '사이트 로고',
+    logoLink: '로고 링크 URL',
+    logoLinkTip: '로고나 아바타 클릭 시 이동할 URL',
     bkInterval: '배경 전환 간격',
     bkIntervalTip: '단위: 밀리초(ms)',
     bkOpacity: '배경 투명도',

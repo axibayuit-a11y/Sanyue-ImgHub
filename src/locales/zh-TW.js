@@ -520,6 +520,8 @@ export default {
     siteIcon: '網站圖示',
     ownerName: '圖床名稱',
     logoUrl: '圖床Logo',
+    logoLink: 'Logo跳轉連結',
+    logoLinkTip: '點擊Logo和頭像時跳轉的網址',
     bkInterval: '背景切換間隔',
     bkIntervalTip: '單位：毫秒 ms',
     bkOpacity: '背景圖透明度',

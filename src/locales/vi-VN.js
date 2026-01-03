@@ -525,6 +525,8 @@ export default {
     siteIcon: 'Biểu tượng trang',
     ownerName: 'Tên trang',
     logoUrl: 'Logo trang',
+    logoLink: 'URL liên kết logo',
+    logoLinkTip: 'URL để điều hướng khi nhấp vào logo hoặc avatar',
     bkInterval: 'Khoảng thời gian đổi nền',
     bkIntervalTip: 'Đơn vị: mili giây (ms)',
     bkOpacity: 'Độ mờ nền',

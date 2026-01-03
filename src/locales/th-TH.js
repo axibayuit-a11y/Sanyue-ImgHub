@@ -523,6 +523,8 @@ export default {
     siteIcon: 'ไอคอนเว็บไซต์',
     ownerName: 'ชื่อเว็บไซต์',
     logoUrl: 'โลโก้เว็บไซต์',
+    logoLink: 'URL ลิงก์โลโก้',
+    logoLinkTip: 'URL สำหรับนำทางเมื่อคลิกโลโก้หรืออวาตาร์',
     bkInterval: 'ช่วงเวลาสลับพื้นหลัง',
     bkIntervalTip: 'หน่วย: มิลลิวินาที (ms)',
     bkOpacity: 'ความทึบของพื้นหลัง',

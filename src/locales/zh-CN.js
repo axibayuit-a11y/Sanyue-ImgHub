@@ -520,6 +520,8 @@ export default {
     siteIcon: '网站图标',
     ownerName: '图床名称',
     logoUrl: '图床Logo',
+    logoLink: 'Logo跳转链接',
+    logoLinkTip: '点击Logo和头像时跳转的网址',
     bkInterval: '背景切换间隔',
     bkIntervalTip: '单位：毫秒 ms',
     bkOpacity: '背景图透明度',

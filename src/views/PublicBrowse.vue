@@ -3,7 +3,7 @@
     <!-- 顶部导航栏 -->
     <header class="header">
       <div class="header-left">
-        <a class="logo" href="https://github.com/MarSeventh/CloudFlare-ImgBed" target="_blank" rel="noopener">{{ siteName }}</a>
+        <a class="logo" :href="logoLink" target="_blank" rel="noopener">{{ siteName }}</a>
       </div>
       <div class="header-center">
         <div class="breadcrumb">
@@ -373,6 +373,9 @@ export default {
     ...mapGetters(['userConfig']),
     siteName() {
       return this.userConfig?.siteTitle || 'Sanyue ImgHub';
+    },
+    logoLink() {
+      return this.userConfig?.logoLink || 'https://github.com/axibayuit-a11y';
     },
     rootDirName() {
       return this.rootDir.split('/').filter(Boolean).pop() || '根目录';

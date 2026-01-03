@@ -1,6 +1,6 @@
 <template>
     <a 
-        :href="href" 
+        :href="logoLink" 
         :target="target"
         :class="logo-link"
     >
@@ -18,10 +18,10 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Logo',
   props: {
-    // Logo链接地址
+    // Logo链接地址（已废弃，使用 userConfig.logoLink）
     href: {
       type: String,
-      default: 'https://github.com/MarSeventh/CloudFlare-ImgBed'
+      default: ''
     },
     // 链接打开方式
     target: {
@@ -64,6 +64,12 @@ export default {
       return this.customSrc || 
              this.userConfig?.logoUrl || 
              require('../assets/logo.png')
+    },
+    logoLink() {
+      // 优先级：用户配置 > props.href > 默认链接
+      return this.userConfig?.logoLink || 
+             this.href || 
+             'https://github.com/axibayuit-a11y'
     },
     logoClasses() {
       return {

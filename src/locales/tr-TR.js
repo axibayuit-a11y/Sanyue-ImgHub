@@ -525,6 +525,8 @@ export default {
     siteIcon: 'Site Simgesi',
     ownerName: 'Site Adı',
     logoUrl: 'Site Logosu',
+    logoLink: 'Logo Bağlantı URL\'si',
+    logoLinkTip: 'Logo veya avatara tıklandığında gidilecek URL',
     bkInterval: 'Arka Plan Değişim Aralığı',
     bkIntervalTip: 'Birim: milisaniye (ms)',
     bkOpacity: 'Arka Plan Opaklığı',

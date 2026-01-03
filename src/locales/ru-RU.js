@@ -526,6 +526,8 @@ export default {
     siteIcon: 'Иконка сайта',
     ownerName: 'Имя сайта',
     logoUrl: 'Логотип сайта',
+    logoLink: 'URL ссылки логотипа',
+    logoLinkTip: 'URL для перехода при нажатии на логотип или аватар',
     bkInterval: 'Интервал смены фона',
     bkIntervalTip: 'Ед.: миллисекунды (ms)',
     bkOpacity: 'Прозрачность фона',

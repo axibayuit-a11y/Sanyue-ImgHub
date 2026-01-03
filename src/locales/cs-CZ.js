@@ -524,6 +524,8 @@ export default {
     siteIcon: 'Ikona webu',
     ownerName: 'Název webu',
     logoUrl: 'Logo webu',
+    logoLink: 'URL odkazu loga',
+    logoLinkTip: 'URL pro navigaci po kliknutí na logo nebo avatar',
     bkInterval: 'Interval střídání pozadí',
     bkIntervalTip: 'Jednotka: milisekundy (ms)',
     bkOpacity: 'Průhlednost pozadí',

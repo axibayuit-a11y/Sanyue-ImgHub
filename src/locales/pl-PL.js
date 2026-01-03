@@ -529,6 +529,8 @@ export default {
     siteIcon: 'Ikona strony',
     ownerName: 'Nazwa strony',
     logoUrl: 'Logo strony',
+    logoLink: 'URL linku logo',
+    logoLinkTip: 'URL do nawigacji po kliknięciu logo lub awatara',
     bkInterval: 'Interwał zmiany tła',
     bkIntervalTip: 'Jednostka: milisekundy (ms)',
     bkOpacity: 'Przezroczystość tła',

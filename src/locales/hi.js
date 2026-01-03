@@ -518,6 +518,8 @@ export default {
     siteIcon: 'साइट आइकन',
     ownerName: 'साइट नाम',
     logoUrl: 'साइट लोगो',
+    logoLink: 'लोगो लिंक URL',
+    logoLinkTip: 'लोगो या अवतार पर क्लिक करने पर नेविगेट करने के लिए URL',
     bkInterval: 'पृष्ठभूमि स्विच अंतराल',
     bkIntervalTip: 'इकाई: मिलीसेकंड (ms)',
     bkOpacity: 'पृष्ठभूमि अपारदर्शिता',

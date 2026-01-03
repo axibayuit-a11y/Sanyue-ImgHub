@@ -520,6 +520,8 @@ export default {
     siteIcon: 'サイトアイコン',
     ownerName: 'サイト名',
     logoUrl: 'サイトロゴ',
+    logoLink: 'ロゴリンクURL',
+    logoLinkTip: 'ロゴやアバターをクリックしたときに移動するURL',
     bkInterval: '背景切替間隔',
     bkIntervalTip: '単位：ミリ秒 (ms)',
     bkOpacity: '背景の透明度',

@@ -75,7 +75,7 @@
         </div>
         <div class="header">
             <Logo />
-            <h1 class="title"><a class="main-title" href="https://github.com/MarSeventh/CloudFlare-ImgBed" target="_blank">{{ ownerName }}</a> ImgHub</h1>
+            <h1 class="title"><a class="main-title" :href="logoLink" target="_blank">{{ ownerName }}</a> ImgHub</h1>
         </div>
         <UploadForm 
             :selectedUrlForm="selectedUrlForm" 
@@ -375,6 +375,9 @@ export default {
         ...mapGetters(['userConfig', 'uploadCopyUrlForm', 'compressConfig', 'storeUploadChannel', 'storeUploadNameType', 'customUrlSettings', 'storeAutoRetry', 'storeUploadMethod', 'storeUploadFolder']),
         ownerName() {
             return this.userConfig?.ownerName || 'Sanyue'
+        },
+        logoLink() {
+            return this.userConfig?.logoLink || 'https://github.com/axibayuit-a11y'
         },
         dialogWidth() {
             return window.innerWidth > 768 ? '50%' : '90%'

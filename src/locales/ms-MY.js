@@ -525,6 +525,8 @@ export default {
     siteIcon: 'Ikon laman',
     ownerName: 'Nama laman',
     logoUrl: 'Logo laman',
+    logoLink: 'URL pautan logo',
+    logoLinkTip: 'URL untuk navigasi apabila mengklik logo atau avatar',
     bkInterval: 'Selang pertukaran latar belakang',
     bkIntervalTip: 'Unit: milisaat (ms)',
     bkOpacity: 'Kelegapan latar belakang',

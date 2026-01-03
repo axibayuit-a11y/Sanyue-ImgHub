@@ -524,6 +524,8 @@ export default {
     siteIcon: 'أيقونة الموقع',
     ownerName: 'اسم الموقع',
     logoUrl: 'شعار الموقع',
+    logoLink: 'رابط الشعار',
+    logoLinkTip: 'عنوان URL للانتقال عند النقر على الشعار أو الصورة الرمزية',
     bkInterval: 'فاصل تبديل الخلفية',
     bkIntervalTip: 'الوحدة: مللي ثانية (ms)',
     bkOpacity: 'شفافية الخلفية',

@@ -524,6 +524,8 @@ export default {
     siteIcon: 'Ikon Situs',
     ownerName: 'Nama Situs',
     logoUrl: 'Logo Situs',
+    logoLink: 'URL Tautan Logo',
+    logoLinkTip: 'URL untuk navigasi saat mengklik logo atau avatar',
     bkInterval: 'Interval Pergantian Latar',
     bkIntervalTip: 'Satuan: milidetik (ms)',
     bkOpacity: 'Opasitas Latar',

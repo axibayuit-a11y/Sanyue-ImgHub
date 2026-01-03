@@ -520,6 +520,8 @@ export default {
     siteIcon: 'Site Icon',
     ownerName: 'Site Name',
     logoUrl: 'Site Logo',
+    logoLink: 'Logo Link URL',
+    logoLinkTip: 'URL to navigate when clicking logo or avatar',
     bkInterval: 'Background Switch Interval',
     bkIntervalTip: 'Unit: milliseconds (ms)',
     bkOpacity: 'Background Opacity',

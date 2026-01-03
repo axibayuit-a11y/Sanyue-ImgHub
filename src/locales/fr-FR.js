@@ -527,6 +527,8 @@ export default {
     siteIcon: 'Icône du site',
     ownerName: 'Nom du site',
     logoUrl: 'Logo du site',
+    logoLink: 'URL du lien du logo',
+    logoLinkTip: 'URL vers laquelle naviguer en cliquant sur le logo ou l\'avatar',
     bkInterval: 'Intervalle de changement de fond',
     bkIntervalTip: 'Unité : millisecondes (ms)',
     bkOpacity: 'Opacité du fond',
