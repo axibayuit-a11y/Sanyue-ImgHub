@@ -46,8 +46,9 @@ function getDefaultLocale() {
   return detectBrowserLocale()
 }
 
+// 使用 legacy: true 模式，这样 $t() 在 Options API 组件中可以直接使用
 const i18n = createI18n({
-  legacy: false, // 使用 Composition API 模式
+  legacy: true,
   locale: getDefaultLocale(),
   fallbackLocale: 'zh-CN',
   messages: {

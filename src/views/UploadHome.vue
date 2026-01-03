@@ -650,6 +650,13 @@ export default {
     }
 }
 
+.language-switcher {
+    position: fixed;
+    top: 30px;
+    right: 340px;
+    z-index: 100;
+}
+
 .toggle-dark-button {
     border: none;
     transition: all 0.3s ease;

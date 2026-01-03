@@ -10,7 +10,7 @@
           v-for="lang in languages" 
           :key="lang.value" 
           :command="lang.value"
-          :class="{ 'is-active': locale === lang.value }"
+          :class="{ 'is-active': currentLocale === lang.value }"
         >
           {{ lang.label }}
         </el-dropdown-item>
@@ -20,36 +20,33 @@
 </template>
 
 <script>
-import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import i18n from '@/locales'
 
 export default {
   name: 'LanguageSwitcher',
-  setup() {
-    const { locale } = useI18n()
-    
-    const languages = [
-      { value: 'zh-CN', label: '简体中文' },
-      { value: 'zh-TW', label: '繁體中文' },
-      { value: 'en', label: 'English' },
-      { value: 'ja', label: '日本語' },
-    ]
-    
-    const currentLanguageLabel = computed(() => {
-      const lang = languages.find(l => l.value === locale.value)
-      return lang ? lang.label : '简体中文'
-    })
-    
-    const changeLanguage = (lang) => {
-      locale.value = lang
-      localStorage.setItem('locale', lang)
-    }
-    
+  data() {
     return {
-      locale,
-      languages,
-      currentLanguageLabel,
-      changeLanguage,
+      languages: [
+        { value: 'zh-CN', label: '简体中文' },
+        { value: 'zh-TW', label: '繁體中文' },
+        { value: 'en', label: 'English' },
+        { value: 'ja', label: '日本語' },
+      ]
+    }
+  },
+  computed: {
+    currentLocale() {
+      return i18n.global.locale
+    },
+    currentLanguageLabel() {
+      const lang = this.languages.find(l => l.value === this.currentLocale)
+      return lang ? lang.label : '简体中文'
+    }
+  },
+  methods: {
+    changeLanguage(lang) {
+      i18n.global.locale = lang
+      localStorage.setItem('locale', lang)
     }
   }
 }
