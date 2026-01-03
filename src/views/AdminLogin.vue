@@ -1,8 +1,8 @@
 <template>
     <BaseLogin
-        title="管理端登录"
+        :title="$t('login.adminLogin')"
         :fields="loginFields"
-        submit-text="登录"
+        :submit-text="$t('login.loginBtn')"
         background-key="adminLoginBkImg"
         :is-admin="true"
         :loading="isLoading"
@@ -21,15 +21,15 @@ export default {
             loginFields: [
                 {
                     key: 'username',
-                    label: '用户名',
-                    placeholder: '请输入用户名',
+                    label: this.$t('login.username'),
+                    placeholder: this.$t('login.usernamePlaceholder'),
                     type: 'text',
                     icon: 'User'
                 },
                 {
                     key: 'password',
-                    label: '密码',
-                    placeholder: '请输入密码',
+                    label: this.$t('login.password'),
+                    placeholder: this.$t('login.passwordPlaceholder'),
                     type: 'password',
                     showPassword: true,
                     icon: 'Lock'
@@ -68,15 +68,15 @@ export default {
                     const error = result.error || new Error('Unknown error');
                     this.isLoading = false;
                     if (error.response && error.response.status === 401) {
-                        this.$message.error('用户名或密码错误');
+                        this.$message.error(this.$t('login.wrongCredentials'));
                     } else {
-                        this.$message.error('服务器错误');
+                        this.$message.error(this.$t('message.serverError'));
                     }
                 }
             } catch (error) {
                 // Should not reach here due to inner catch, but just in case
                 this.isLoading = false;
-                this.$message.error('系统错误');
+                this.$message.error(this.$t('common.error'));
             }
         }
     }

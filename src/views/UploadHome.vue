@@ -2,20 +2,21 @@
     <div class="container">
     <div class="upload-home">
         <!-- 桌面端按钮 -->
+        <LanguageSwitcher class="language-switcher desktop-only"/>
         <ToggleDark class="toggle-dark-button desktop-only"/>
-        <el-tooltip content="查看文档" placement="bottom" :disabled="disableTooltip">
+        <el-tooltip :content="$t('nav.viewDocs')" placement="bottom" :disabled="disableTooltip">
             <a href="https://cfbed.sanyue.de/qa/" target="_blank" class="info-container">
                 <font-awesome-icon icon="book" class="info-icon" size="lg"/>
             </a>
         </el-tooltip>
-        <el-input class="upload-folder" :class="{ 'active': isFolderInputActive }" v-model="uploadFolder" placeholder="上传目录" @focus="isFolderInputActive = true" @blur="isFolderInputActive = false"/>
-        <el-tooltip content="切换上传方式" placement="bottom" :disabled="disableTooltip">
+        <el-input class="upload-folder" :class="{ 'active': isFolderInputActive }" v-model="uploadFolder" :placeholder="$t('upload.folder')" @focus="isFolderInputActive = true" @blur="isFolderInputActive = false"/>
+        <el-tooltip :content="$t('upload.method')" placement="bottom" :disabled="disableTooltip">
             <el-button class="upload-method-button desktop-only" @click="handleChangeUploadMethod">
                 <font-awesome-icon v-if="uploadMethod === 'default'"  icon="folder-open" class="upload-method-icon" size="lg"/>
                 <font-awesome-icon v-else-if="uploadMethod === 'paste'" icon="paste" class="upload-method-icon" size="lg"/>
             </el-button>
         </el-tooltip>
-        <el-tooltip content="上传记录" placement="bottom" :disabled="disableTooltip">
+        <el-tooltip :content="$t('upload.history')" placement="bottom" :disabled="disableTooltip">
             <el-button class="history-button desktop-only" @click="showHistory = true">
                 <font-awesome-icon icon="history" class="history-icon" size="lg"/>
             </el-button>
@@ -34,11 +35,11 @@
                     </el-dropdown-item>
                     <el-dropdown-item command="toggleUploadMethod">
                         <font-awesome-icon :icon="uploadMethod === 'default' ? 'paste' : 'folder-open'" style="margin-right: 8px;"/>
-                        {{ uploadMethod === 'default' ? '粘贴上传' : '文件上传' }}
+                        {{ uploadMethod === 'default' ? $t('upload.pasteUpload') : $t('upload.fileUpload') }}
                     </el-dropdown-item>
                     <el-dropdown-item command="showHistory">
                         <font-awesome-icon icon="history" style="margin-right: 8px;"/>
-                        上传记录
+                        {{ $t('upload.history') }}
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </template>
@@ -50,22 +51,22 @@
             </el-button>
         </div>
         <div class="toolbar">
-            <el-tooltip :disabled="disableTooltip" content="上传设置" placement="top">
+            <el-tooltip :disabled="disableTooltip" :content="$t('upload.title')" placement="top">
                 <el-button class="toolbar-button compress-button" :class="{ 'active': isToolBarOpen}" size="large" @click="openCompressDialog" circle>
                     <font-awesome-icon icon="cloud-upload" class="compress-icon" size="lg"/>
                 </el-button>
             </el-tooltip>
-            <el-tooltip :disabled="disableTooltip" content="链接格式" placement="left">
+            <el-tooltip :disabled="disableTooltip" :content="$t('link.formatTitle')" placement="left">
                 <el-button class="toolbar-button link-button" :class="{ 'active': isToolBarOpen}" size="large" @click="openUrlDialog" circle>
                     <font-awesome-icon icon="link" class="link-icon" size="lg"/>
                 </el-button>
             </el-tooltip>
-            <el-tooltip :disabled="disableTooltip" content="系统管理" placement="left">
+            <el-tooltip :disabled="disableTooltip" :content="$t('nav.systemConfig')" placement="left">
                 <el-button class="toolbar-button config-button" :class="{ 'active': isToolBarOpen}" size="large" @click="handleManage" circle>
                     <font-awesome-icon icon="cog" class="config-icon" size="lg"/>
                 </el-button>
             </el-tooltip>
-            <el-tooltip :disabled="disableTooltip" content="退出登录" placement="left">
+            <el-tooltip :disabled="disableTooltip" :content="$t('nav.logout')" placement="left">
                 <el-button class="toolbar-button sign-out-button" :class="{ 'active': isToolBarOpen}" size="large" @click="handleLogout" circle>
                     <font-awesome-icon icon="sign-out-alt" class="sign-out-icon" size="lg"/>
                 </el-button>
@@ -91,28 +92,28 @@
             :uploadFolder="uploadFolder"
             class="upload"
         />
-        <el-dialog title="链接格式设置" v-model="showUrlDialog" :width="dialogWidth" :show-close="false" class="settings-dialog">
+        <el-dialog :title="$t('link.title')" v-model="showUrlDialog" :width="dialogWidth" :show-close="false" class="settings-dialog">
             <div class="dialog-section">
                 <div class="section-header">
-                    <span class="section-title">默认复制链接</span>
+                    <span class="section-title">{{ $t('link.defaultCopy') }}</span>
                 </div>
                 <div class="section-content">
                     <el-radio-group v-model="selectedUrlForm" @change="changeUrlForm" class="radio-card-group grid-2x2">
                         <el-radio value="url" class="radio-card">
                             <font-awesome-icon icon="link" class="radio-icon"/>
-                            <span>原始链接</span>
+                            <span>{{ $t('link.originUrl') }}</span>
                         </el-radio>
                         <el-radio value="md" class="radio-card">
                             <font-awesome-icon icon="code" class="radio-icon"/>
-                            <span>MarkDown</span>
+                            <span>{{ $t('link.markdown') }}</span>
                         </el-radio>
                         <el-radio value="html" class="radio-card">
                             <font-awesome-icon icon="code-branch" class="radio-icon"/>
-                            <span>HTML</span>
+                            <span>{{ $t('link.html') }}</span>
                         </el-radio>
                         <el-radio value="ubb" class="radio-card">
                             <font-awesome-icon icon="quote-right" class="radio-icon"/>
-                            <span>BBCode</span>
+                            <span>{{ $t('link.bbcode') }}</span>
                         </el-radio>
                     </el-radio-group>
                 </div>
@@ -120,36 +121,36 @@
             
             <div class="dialog-section">
                 <div class="section-header">
-                    <span class="section-title">自定义链接</span>
-                    <el-tooltip content="默认链接为https://your.domain/file/xxx.jpg <br> 如果启用自定义链接格式，只保留xxx.jpg部分，其他部分请自行输入" placement="top" raw-content>
+                    <span class="section-title">{{ $t('link.customTitle') }}</span>
+                    <el-tooltip :content="$t('link.customTip')" placement="top" raw-content>
                         <font-awesome-icon icon="question-circle" class="section-help-icon"/>
                     </el-tooltip>
                 </div>
                 <div class="section-content">
                     <div class="setting-item">
-                        <span class="setting-label">启用自定义</span>
+                        <span class="setting-label">{{ $t('link.enableCustom') }}</span>
                         <el-switch v-model="useCustomUrl" active-value="true" inactive-value="false" />
                     </div>
                     <div class="setting-item" v-if="useCustomUrl === 'true'">
-                        <span class="setting-label">自定义前缀</span>
-                        <el-input v-model="customUrlPrefix" placeholder="请输入自定义链接前缀" class="setting-input"/>
+                        <span class="setting-label">{{ $t('link.customPrefix') }}</span>
+                        <el-input v-model="customUrlPrefix" :placeholder="$t('link.customPrefixPlaceholder')" class="setting-input"/>
                     </div>
                 </div>
             </div>
             
             <div class="dialog-action">
-                <el-button type="primary" @click="showUrlDialog = false" class="confirm-btn">确定</el-button>
+                <el-button type="primary" @click="showUrlDialog = false" class="confirm-btn">{{ $t('common.confirm') }}</el-button>
             </div>
         </el-dialog>
-        <el-dialog title="上传设置" v-model="showCompressDialog" :width="dialogWidth" :show-close="false" class="settings-dialog">
+        <el-dialog :title="$t('upload.title')" v-model="showCompressDialog" :width="dialogWidth" :show-close="false" class="settings-dialog">
             <!-- 上传渠道 -->
             <div class="dialog-section">
                 <div class="section-header">
-                    <span class="section-title">上传渠道</span>
+                    <span class="section-title">{{ $t('upload.channel') }}</span>
                 </div>
                 <div class="section-content">
                     <div class="setting-item">
-                        <span class="setting-label">上传渠道</span>
+                        <span class="setting-label">{{ $t('upload.channel') }}</span>
                         <el-radio-group v-model="uploadChannel" class="radio-card-group compact">
                             <el-radio label="telegram" class="radio-card">TG</el-radio>
                             <el-radio label="cfr2" class="radio-card">R2</el-radio>
@@ -159,13 +160,13 @@
                         </el-radio-group>
                     </div>
                     <div class="setting-item">
-                        <span class="setting-label">上传目录</span>
-                        <el-input v-model="uploadFolder" placeholder="请输入上传目录路径" class="setting-input"/>
+                        <span class="setting-label">{{ $t('upload.folder') }}</span>
+                        <el-input v-model="uploadFolder" :placeholder="$t('upload.folderPlaceholder')" class="setting-input"/>
                     </div>
                     <div class="setting-item">
                         <span class="setting-label">
-                            自动切换
-                            <el-tooltip content="对于非分块上传文件，上传失败自动切换到其他渠道上传" placement="top">
+                            {{ $t('upload.autoSwitch') }}
+                            <el-tooltip :content="$t('upload.autoSwitchTip')" placement="top">
                                 <font-awesome-icon icon="question-circle" class="inline-help-icon"/>
                             </el-tooltip>
                         </span>
@@ -177,25 +178,25 @@
             <!-- 文件命名方式 -->
             <div class="dialog-section">
                 <div class="section-header">
-                    <span class="section-title">文件命名方式</span>
+                    <span class="section-title">{{ $t('naming.title') }}</span>
                 </div>
                 <div class="section-content">
                     <el-radio-group v-model="uploadNameType" class="radio-card-group grid-2x2">
                         <el-radio label="default" class="radio-card">
                             <font-awesome-icon icon="cog" class="radio-icon"/>
-                            <span>默认</span>
+                            <span>{{ $t('naming.default') }}</span>
                         </el-radio>
                         <el-radio label="index" class="radio-card">
                             <font-awesome-icon icon="hashtag" class="radio-icon"/>
-                            <span>仅前缀</span>
+                            <span>{{ $t('naming.indexOnly') }}</span>
                         </el-radio>
                         <el-radio label="origin" class="radio-card">
                             <font-awesome-icon icon="file-signature" class="radio-icon"/>
-                            <span>仅原名</span>
+                            <span>{{ $t('naming.originOnly') }}</span>
                         </el-radio>
                         <el-radio label="short" class="radio-card">
                             <font-awesome-icon icon="compress-alt" class="radio-icon"/>
-                            <span>短链接</span>
+                            <span>{{ $t('naming.shortLink') }}</span>
                         </el-radio>
                     </el-radio-group>
                 </div>
@@ -204,20 +205,20 @@
             <!-- 客户端压缩 -->
             <div class="dialog-section">
                 <div class="section-header">
-                    <span class="section-title">客户端压缩</span>
-                    <el-tooltip content="上传前在本地进行压缩，仅对图片文件生效" placement="top">
+                    <span class="section-title">{{ $t('compress.clientTitle') }}</span>
+                    <el-tooltip :content="$t('compress.clientTip')" placement="top">
                         <font-awesome-icon icon="question-circle" class="section-help-icon"/>
                     </el-tooltip>
                 </div>
                 <div class="section-content">
                     <div class="setting-item">
-                        <span class="setting-label">开启压缩</span>
+                        <span class="setting-label">{{ $t('compress.enable') }}</span>
                         <el-switch v-model="customerCompress" />
                     </div>
                     <div class="setting-item slider-item" v-if="customerCompress">
                         <span class="setting-label">
-                            压缩阈值
-                            <el-tooltip content="设置图片大小阈值，超过此值将自动压缩，单位MB" placement="top">
+                            {{ $t('compress.threshold') }}
+                            <el-tooltip :content="$t('compress.thresholdTip')" placement="top">
                                 <font-awesome-icon icon="question-circle" class="inline-help-icon"/>
                             </el-tooltip>
                         </span>
@@ -231,8 +232,8 @@
                     </div>
                     <div class="setting-item slider-item" v-if="customerCompress">
                         <span class="setting-label">
-                            期望大小
-                            <el-tooltip content="设置压缩后图片大小期望值，单位MB" placement="top">
+                            {{ $t('compress.targetSize') }}
+                            <el-tooltip :content="$t('compress.targetSizeTip')" placement="top">
                                 <font-awesome-icon icon="question-circle" class="inline-help-icon"/>
                             </el-tooltip>
                         </span>
@@ -250,30 +251,30 @@
             <!-- 服务端压缩 - 仅 Telegram -->
             <div class="dialog-section" v-if="uploadChannel === 'telegram'">
                 <div class="section-header">
-                    <span class="section-title">服务端压缩</span>
-                    <el-tooltip content="1. 在 Telegram 端进行压缩，仅对上传渠道为 Telegram 的图片文件生效 <br> 2. 若图片大小（本地压缩后大小）大于10MB，本设置自动失效 <br> 3. 若上传分辨率过大、透明背景等图片，建议关闭服务端压缩，否则可能出现未知问题" placement="top" raw-content>
+                    <span class="section-title">{{ $t('compress.serverTitle') }}</span>
+                    <el-tooltip :content="$t('compress.serverTip')" placement="top" raw-content>
                         <font-awesome-icon icon="question-circle" class="section-help-icon"/>
                     </el-tooltip>
                 </div>
                 <div class="section-content">
                     <div class="setting-item">
-                        <span class="setting-label">开启压缩</span>
+                        <span class="setting-label">{{ $t('compress.enable') }}</span>
                         <el-switch v-model="serverCompress" />
                     </div>
                 </div>
             </div>
             
             <div class="dialog-action">
-                <el-button type="primary" @click="showCompressDialog = false" class="confirm-btn">确定</el-button>
+                <el-button type="primary" @click="showCompressDialog = false" class="confirm-btn">{{ $t('common.confirm') }}</el-button>
             </div>
         </el-dialog>
     </div>
     <Footer class="footer"/>
-    <el-dialog title="公告" v-model="showAnnouncementDialog" :width="dialogWidth" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" center>
+    <el-dialog :title="$t('sysConfig.announcement')" v-model="showAnnouncementDialog" :width="dialogWidth" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" center>
         <div v-html="announcementContent"></div>
         <template #footer>
             <span class="dialog-footer">
-                <el-button type="primary" @click="showAnnouncementDialog = false">我已知晓！</el-button>
+                <el-button type="primary" @click="showAnnouncementDialog = false">{{ $t('common.confirm') }}</el-button>
             </span>
         </template>
     </el-dialog>
@@ -285,6 +286,7 @@
 import UploadForm from '@/components/UploadForm.vue'
 import Footer from '@/components/Footer.vue'
 import ToggleDark from '@/components/ToggleDark.vue'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import Logo from '@/components/Logo.vue'
 import UploadHistory from '@/components/UploadHistory.vue'
 import backgroundManager from '@/mixins/backgroundManager'
@@ -434,6 +436,7 @@ export default {
         UploadForm,
         Footer,
         ToggleDark,
+        LanguageSwitcher,
         Logo,
         UploadHistory
     },

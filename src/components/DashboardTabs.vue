@@ -18,19 +18,19 @@
                 <el-dropdown-menu>
                     <el-dropdown-item command="dashboard" v-if="activeTab !== 'dashboard'">
                         <font-awesome-icon icon="images" style="margin-right: 5px; width: 16px;"></font-awesome-icon>
-                        文件管理
+                        {{ $t('nav.fileManagement') || $t('nav.dashboard') }}
                     </el-dropdown-item>
                     <el-dropdown-item command="customerConfig" v-if="activeTab !== 'customerConfig'">
                         <font-awesome-icon icon="user-cog" style="margin-right: 5px; width: 16px;"></font-awesome-icon>
-                        用户管理
+                        {{ $t('nav.userManagement') }}
                     </el-dropdown-item>
                     <el-dropdown-item command="systemConfig" v-if="activeTab !== 'systemConfig'">
                         <font-awesome-icon icon="cogs" style="margin-right: 5px; width: 16px;"></font-awesome-icon>
-                        系统设置
+                        {{ $t('nav.systemConfig') }}
                     </el-dropdown-item>
                     <el-dropdown-item command="">
                         <font-awesome-icon icon="upload" style="margin-right: 5px; width: 16px;"></font-awesome-icon>
-                        文件上传
+                        {{ $t('nav.uploadHome') }}
                     </el-dropdown-item>
                 </el-dropdown-menu>
             </template>
@@ -56,13 +56,13 @@ export default {
     computed: {
         titleName() {
             if (this.activeTab === 'dashboard') {
-                return '文件管理';
+                return this.$t('nav.fileManagement') || this.$t('nav.dashboard');
             } else if (this.activeTab === 'customerConfig') {
-                return '用户管理';
+                return this.$t('nav.userManagement');
             } else if (this.activeTab === 'systemConfig') {
-                return '系统设置';
+                return this.$t('nav.systemConfig');
             } else {
-                return '上传页面';
+                return this.$t('nav.uploadHome');
             }
         },
         iconName() {

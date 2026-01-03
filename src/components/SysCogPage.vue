@@ -31,7 +31,7 @@
     
         <!-- 保存按钮 -->
         <div class="actions">
-            <el-button type="primary" @click="saveSettings">保存设置</el-button>
+            <el-button type="primary" @click="saveSettings">{{ $t('pageSettings.saveSettings') }}</el-button>
         </div>
     </div>
 </template>
@@ -74,7 +74,7 @@ methods: {
             },
             body: JSON.stringify(this.settings)
         })
-        .then(() => this.$message.success('设置已保存'));
+        .then(() => this.$message.success(this.$t('message.settingsSaved')));
     }
 },
 mounted() {

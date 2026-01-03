@@ -5,7 +5,7 @@
             <div class="header-content">
                 <DashboardTabs activeTab="dashboard"></DashboardTabs>
                 <div class="search-card">
-                    <el-input v-model="tempSearch" size="mini" placeholder="搜索：#标签 -#排除标签" @keyup.enter="handleSearch">
+                    <el-input v-model="tempSearch" size="mini" :placeholder="$t('dashboard.searchPlaceholder')" @keyup.enter="handleSearch">
                         <template #suffix>
                             <font-awesome-icon icon="search" class="search-icon" @click="handleSearch"/>
                         </template>
@@ -18,12 +18,12 @@
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item command="dateDesc">按时间倒序</el-dropdown-item>
-                            <el-dropdown-item command="nameAsc">按名称升序</el-dropdown-item>
+                            <el-dropdown-item command="dateDesc">{{ $t('dashboard.sortByDateDesc') }}</el-dropdown-item>
+                            <el-dropdown-item command="nameAsc">{{ $t('dashboard.sortByNameAsc') }}</el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
                 </el-dropdown>
-                <el-tooltip :disabled="disableTooltip" content="全选此页" placement="bottom">
+                <el-tooltip :disabled="disableTooltip" :content="$t('dashboard.selectPage')" placement="bottom">
                     <font-awesome-icon :icon="selectPageIcon" class="header-icon" @click="handleSelectPage"></font-awesome-icon>
                 </el-tooltip>
                 <el-dropdown @command="handleBatchAction" :hide-on-click="false" :disabled="selectedFiles.length === 0">
@@ -34,44 +34,44 @@
                         <el-dropdown-menu>
                             <el-dropdown-item command="copy">
                                 <font-awesome-icon icon="copy" class="batch-action-item-icon"></font-awesome-icon>
-                                复制
+                                {{ $t('common.copy') }}
                             </el-dropdown-item>
                             <el-dropdown-item command="delete">
                                 <font-awesome-icon icon="trash-alt" class="batch-action-item-icon"></font-awesome-icon>
-                                删除
+                                {{ $t('common.delete') }}
                             </el-dropdown-item>
                             <el-dropdown-item command="download">
                                 <font-awesome-icon icon="download" class="batch-action-item-icon"></font-awesome-icon>
-                                下载
+                                {{ $t('common.download') }}
                             </el-dropdown-item>
                             <el-dropdown-item command="move">
                                 <font-awesome-icon icon="file-export" class="batch-action-item-icon"></font-awesome-icon>
-                                移动
+                                {{ $t('common.move') }}
                             </el-dropdown-item>
                             <el-dropdown-item command="tagManagement">
                                 <font-awesome-icon icon="tags" class="batch-action-item-icon"></font-awesome-icon>
-                                标签管理
+                                {{ $t('dashboard.tagManagement') }}
                             </el-dropdown-item>
                             <el-dropdown-item command="ban">
                                 <font-awesome-icon icon="ban" class="batch-action-item-icon"></font-awesome-icon>
-                                加入黑名单
+                                {{ $t('dashboard.addToBlacklist') }}
                             </el-dropdown-item>
                             <el-dropdown-item command="white">
                                 <font-awesome-icon icon="user-plus" class="batch-action-item-icon"></font-awesome-icon>
-                                加入白名单
+                                {{ $t('dashboard.addToWhitelist') }}
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
                 </el-dropdown>
-                <el-tooltip :disabled="disableTooltip" content="链接格式" placement="bottom">
+                <el-tooltip :disabled="disableTooltip" :content="$t('link.formatTitle')" placement="bottom">
                     <span class="el-dropdown-link">
                         <font-awesome-icon icon="link" class="header-icon" @click="showUrlDialog = true"></font-awesome-icon>
                     </span>
                 </el-tooltip>
-                <el-tooltip :disabled="disableTooltip" :content="viewMode === 'card' ? '列表视图' : '卡片视图'" placement="bottom">
+                <el-tooltip :disabled="disableTooltip" :content="viewMode === 'card' ? $t('dashboard.listView') : $t('dashboard.cardView')" placement="bottom">
                     <font-awesome-icon :icon="viewMode === 'card' ? 'list' : 'th-large'" class="header-icon" @click="toggleViewMode"></font-awesome-icon>
                 </el-tooltip>
-                <el-tooltip :disabled="disableTooltip" content="退出登录" placement="bottom">
+                <el-tooltip :disabled="disableTooltip" :content="$t('nav.logout')" placement="bottom">
                     <font-awesome-icon icon="sign-out-alt" class="header-icon" @click="handleLogout"></font-awesome-icon>
                 </el-tooltip>
                 </div>
@@ -83,7 +83,7 @@
                 <!-- 移动端目录按钮 -->
                 <div class="mobile-directory-trigger" @click="showMobileDirectoryDrawer = true">
                     <font-awesome-icon icon="folder-open" class="mobile-directory-icon"/>
-                    <span class="mobile-directory-path">{{ currentPath && currentPath.split('/').filter(Boolean).length > 0 ? currentPath.split('/').filter(Boolean).pop() : '根目录' }}</span>
+                    <span class="mobile-directory-path">{{ currentPath && currentPath.split('/').filter(Boolean).length > 0 ? currentPath.split('/').filter(Boolean).pop() : $t('common.rootDir') }}</span>
                     <font-awesome-icon icon="chevron-down" class="mobile-directory-arrow"/>
                 </div>
                 <!-- 桌面端面包屑 -->
@@ -130,12 +130,12 @@
                             <div v-if="!isSearchMode" class="action-bar">
                                 <div class="action-bar-left"></div>
                                 <div class="action-bar-right">
-                                    <el-tooltip :disabled="disableTooltip" content="移动" placement="top">
+                                    <el-tooltip :disabled="disableTooltip" :content="$t('common.move')" placement="top">
                                         <button class="action-btn" @click.stop="handleMove(index, item.name)">
                                             <font-awesome-icon icon="file-export"></font-awesome-icon>
                                         </button>
                                     </el-tooltip>
-                                    <el-tooltip :disabled="disableTooltip" content="删除" placement="top">
+                                    <el-tooltip :disabled="disableTooltip" :content="$t('common.delete')" placement="top">
                                         <button class="action-btn action-btn-danger" @click.stop="handleDelete(index, item.name)">
                                             <font-awesome-icon icon="trash-alt"></font-awesome-icon>
                                         </button>
@@ -181,29 +181,29 @@
                             </div>
                             <div class="action-bar">
                                 <div class="action-bar-left">
-                                    <el-tooltip :disabled="disableTooltip" content="详情" placement="top">
+                                    <el-tooltip :disabled="disableTooltip" :content="$t('common.details')" placement="top">
                                         <button class="action-btn" @click.stop="openDetailDialog(index, item.name)">
                                             <font-awesome-icon icon="info-circle"></font-awesome-icon>
                                         </button>
                                     </el-tooltip>
                                 </div>
                                 <div class="action-bar-right">
-                                    <el-tooltip :disabled="disableTooltip" content="移动" placement="top">
+                                    <el-tooltip :disabled="disableTooltip" :content="$t('common.move')" placement="top">
                                         <button class="action-btn" @click.stop="handleMove(index, item.name)">
                                             <font-awesome-icon icon="file-export"></font-awesome-icon>
                                         </button>
                                     </el-tooltip>
-                                    <el-tooltip :disabled="disableTooltip" content="删除" placement="top">
+                                    <el-tooltip :disabled="disableTooltip" :content="$t('common.delete')" placement="top">
                                         <button class="action-btn action-btn-danger" @click.stop="handleDelete(index, item.name)">
                                             <font-awesome-icon icon="trash-alt"></font-awesome-icon>
                                         </button>
                                     </el-tooltip>
-                                    <el-tooltip :disabled="disableTooltip" content="下载" placement="top">
+                                    <el-tooltip :disabled="disableTooltip" :content="$t('common.download')" placement="top">
                                         <button class="action-btn" @click.stop="handleDownload(item.name)">
                                             <font-awesome-icon icon="download"></font-awesome-icon>
                                         </button>
                                     </el-tooltip>
-                                    <el-tooltip :disabled="disableTooltip" content="复制链接" placement="top">
+                                    <el-tooltip :disabled="disableTooltip" :content="$t('publicBrowse.copyLink')" placement="top">
                                         <button class="action-btn" @click.stop="handleCopy(index, item.name)">
                                             <font-awesome-icon icon="copy"></font-awesome-icon>
                                         </button>
@@ -223,14 +223,14 @@
                             <font-awesome-icon v-else-if="isIndeterminate" icon="minus" class="check-icon"/>
                         </span>
                     </div>
-                    <div class="list-col list-col-preview">预览</div>
-                    <div class="list-col list-col-name">文件名</div>
-                    <div class="list-col list-col-tags">标签</div>
-                    <div class="list-col list-col-channel">上传渠道</div>
-                    <div class="list-col list-col-address">上传地址</div>
-                    <div class="list-col list-col-size">大小</div>
-                    <div class="list-col list-col-date">上传时间</div>
-                    <div class="list-col list-col-actions">操作</div>
+                    <div class="list-col list-col-preview">{{ $t('listHeader.preview') }}</div>
+                    <div class="list-col list-col-name">{{ $t('listHeader.fileName') }}</div>
+                    <div class="list-col list-col-tags">{{ $t('listHeader.tags') }}</div>
+                    <div class="list-col list-col-channel">{{ $t('listHeader.channel') }}</div>
+                    <div class="list-col list-col-address">{{ $t('listHeader.address') }}</div>
+                    <div class="list-col list-col-size">{{ $t('listHeader.size') }}</div>
+                    <div class="list-col list-col-date">{{ $t('listHeader.date') }}</div>
+                    <div class="list-col list-col-actions">{{ $t('listHeader.actions') }}</div>
                 </div>
                 <div 
                     v-for="(item, index) in paginatedTableData" 
@@ -292,28 +292,28 @@
                     </div>
                     <div class="list-col list-col-actions">
                         <template v-if="!isFolder(item)">
-                            <el-tooltip content="复制链接" placement="top">
+                            <el-tooltip :content="$t('publicBrowse.copyLink')" placement="top">
                                 <button class="list-action-btn" @click.stop="handleCopy(index, item.name)">
                                     <font-awesome-icon icon="copy"/>
                                 </button>
                             </el-tooltip>
-                            <el-tooltip content="下载" placement="top">
+                            <el-tooltip :content="$t('common.download')" placement="top">
                                 <button class="list-action-btn" @click.stop="handleDownload(item.name)">
                                     <font-awesome-icon icon="download"/>
                                 </button>
                             </el-tooltip>
-                            <el-tooltip content="移动" placement="top">
+                            <el-tooltip :content="$t('common.move')" placement="top">
                                 <button class="list-action-btn" @click.stop="handleMove(index, item.name)">
                                     <font-awesome-icon icon="file-export"/>
                                 </button>
                             </el-tooltip>
                         </template>
-                        <el-tooltip v-else content="移动" placement="top">
+                        <el-tooltip v-else :content="$t('common.move')" placement="top">
                             <button class="list-action-btn" @click.stop="handleMove(index, item.name)">
                                 <font-awesome-icon icon="file-export"/>
                             </button>
                         </el-tooltip>
-                        <el-tooltip content="删除" placement="top">
+                        <el-tooltip :content="$t('common.delete')" placement="top">
                             <button class="list-action-btn list-action-danger" @click.stop="handleDelete(index, item.name)">
                                 <font-awesome-icon icon="trash-alt"/>
                             </button>
@@ -345,38 +345,38 @@
                         @click="loadMoreData" 
                         :loading="loading" 
                         class="load-more">
-                        加载更多
+                        {{ $t('common.loadMore') }}
                     </el-button>
                 </div>
             </div>
             </el-main>
         </el-container>
-        <el-dialog title="文件详情" v-model="showdetailDialog" :width="dialogWidth">
+        <el-dialog :title="$t('fileDetail.title')" v-model="showdetailDialog" :width="dialogWidth">
             <div class="detail-actions">
                 <el-button type="primary" @click="handleDownload(detailFile?.name)" round size="small" class="detail-action">
-                    <font-awesome-icon icon="download" style="margin-right: 3px;"></font-awesome-icon> 下载
+                    <font-awesome-icon icon="download" style="margin-right: 3px;"></font-awesome-icon> {{ $t('common.download') }}
                 </el-button>
                 <el-button type="primary" @click="handleTagManagement(detailFile?.name)" round size="small" class="detail-action">
-                    <font-awesome-icon icon="tags" style="margin-right: 3px;"></font-awesome-icon> 标签
+                    <font-awesome-icon icon="tags" style="margin-right: 3px;"></font-awesome-icon> {{ $t('dashboard.tagManagement') }}
                 </el-button>
                 <el-button type="primary" @click="handleBlock(detailFile?.name)" round size="small" class="detail-action">
-                    <font-awesome-icon icon="ban" style="margin-right: 3px;"></font-awesome-icon> 黑名单
+                    <font-awesome-icon icon="ban" style="margin-right: 3px;"></font-awesome-icon> {{ $t('list.blacklist') }}
                 </el-button>
                 <el-button type="primary" @click="handleWhite(detailFile?.name)" round size="small" class="detail-action">
-                    <font-awesome-icon icon="user-plus" style="margin-right: 3px;"></font-awesome-icon> 白名单
+                    <font-awesome-icon icon="user-plus" style="margin-right: 3px;"></font-awesome-icon> {{ $t('list.whitelist') }}
                 </el-button>
                 <el-button type="danger" @click="handleDetailDelete(detailFile?.name)" round size="small" class="detail-action">
-                    <font-awesome-icon icon="trash-alt" style="margin-right: 3px;"></font-awesome-icon> 删除
+                    <font-awesome-icon icon="trash-alt" style="margin-right: 3px;"></font-awesome-icon> {{ $t('common.delete') }}
                 </el-button>
             </div> 
             <el-tabs  v-model="activeUrlTab" @tab-click="handleTabClick" style="margin-bottom: 10px;">
-                <el-tab-pane label="原始链接" name="originUrl">
+                <el-tab-pane :label="$t('link.originUrl')" name="originUrl">
                     <el-input v-model="allUrl.originUrl" readonly @click="handleUrlClick"></el-input>
                 </el-tab-pane>
-                <el-tab-pane label="Markdown" name="mdUrl">
+                <el-tab-pane :label="$t('link.markdown')" name="mdUrl">
                     <el-input v-model="allUrl.mdUrl" readonly @click="handleUrlClick"></el-input>
                 </el-tab-pane>
-                <el-tab-pane label="HTML" name="htmlUrl">
+                <el-tab-pane :label="$t('link.html')" name="htmlUrl">
                     <el-input v-model="allUrl.htmlUrl" readonly @click="handleUrlClick"></el-input>
                 </el-tab-pane>
                 <el-tab-pane label="BBCode" name="bbUrl">
@@ -391,7 +391,7 @@
             </el-tabs>
             <el-descriptions direction="vertical" border :column="tableColumnNum">
                 <el-descriptions-item 
-                    label="文件预览"
+                    :label="$t('common.preview')"
                     :rowspan="tablePreviewSpan"
                     :width="300"
                     align="center"
@@ -401,16 +401,16 @@
                     <el-image v-else-if="isImage(detailFile)" :src="getFileLink(detailFile?.name)" fit="cover" lazy class="image-preview"></el-image>
                     <font-awesome-icon v-else icon="file" class="file-icon-detail"></font-awesome-icon>
                 </el-descriptions-item>
-                <el-descriptions-item label="文件名" class-name="description-item">{{ detailFile?.metadata?.FileName || detailFile?.name }}</el-descriptions-item>
-                <el-descriptions-item label="文件类型" class-name="description-item">{{ detailFile?.metadata?.FileType || '未知' }}</el-descriptions-item>
-                <el-descriptions-item label="文件大小(MB)" class-name="description-item">{{ detailFile?.metadata?.FileSize || '未知' }}</el-descriptions-item>
-                <el-descriptions-item label="上传时间" class-name="description-item">{{ new Date(detailFile?.metadata?.TimeStamp).toLocaleString() || '未知' }}</el-descriptions-item>
-                <el-descriptions-item label="访问状态" class-name="description-item">{{ accessType }}</el-descriptions-item>
-                <el-descriptions-item label="上传渠道" class-name="description-item">{{ detailFile?.metadata?.Channel || '未知' }}</el-descriptions-item>
-                <el-descriptions-item label="审查结果" class-name="description-item">{{ detailFile?.metadata?.Label || '无' }}</el-descriptions-item>
-                <el-descriptions-item label="上传IP" class-name="description-item">{{ detailFile?.metadata?.UploadIP || '未知' }}</el-descriptions-item>
-                <el-descriptions-item label="上传地址" class-name="description-item">{{ detailFile?.metadata?.UploadAddress || '未知' }}</el-descriptions-item>
-                <el-descriptions-item label="文件标签" class-name="description-item">
+                <el-descriptions-item :label="$t('fileDetail.fileName')" class-name="description-item">{{ detailFile?.metadata?.FileName || detailFile?.name }}</el-descriptions-item>
+                <el-descriptions-item :label="$t('fileDetail.fileType')" class-name="description-item">{{ detailFile?.metadata?.FileType || $t('fileDetail.unknown') }}</el-descriptions-item>
+                <el-descriptions-item :label="$t('fileDetail.fileSize')" class-name="description-item">{{ detailFile?.metadata?.FileSize || $t('fileDetail.unknown') }}</el-descriptions-item>
+                <el-descriptions-item :label="$t('fileDetail.uploadTime')" class-name="description-item">{{ new Date(detailFile?.metadata?.TimeStamp).toLocaleString() || $t('fileDetail.unknown') }}</el-descriptions-item>
+                <el-descriptions-item :label="$t('fileDetail.accessStatus')" class-name="description-item">{{ accessType }}</el-descriptions-item>
+                <el-descriptions-item :label="$t('fileDetail.uploadChannel')" class-name="description-item">{{ detailFile?.metadata?.Channel || $t('fileDetail.unknown') }}</el-descriptions-item>
+                <el-descriptions-item :label="$t('fileDetail.reviewResult')" class-name="description-item">{{ detailFile?.metadata?.Label || $t('fileDetail.none') }}</el-descriptions-item>
+                <el-descriptions-item :label="$t('fileDetail.uploadIP')" class-name="description-item">{{ detailFile?.metadata?.UploadIP || $t('fileDetail.unknown') }}</el-descriptions-item>
+                <el-descriptions-item :label="$t('fileDetail.uploadAddress')" class-name="description-item">{{ detailFile?.metadata?.UploadAddress || $t('fileDetail.unknown') }}</el-descriptions-item>
+                <el-descriptions-item :label="$t('fileDetail.fileTags')" class-name="description-item">
                     <div v-if="detailFile?.metadata?.Tags && detailFile?.metadata?.Tags.length > 0" style="display: flex; flex-wrap: wrap; gap: 5px;">
                         <el-tag 
                             v-for="tag in detailFile?.metadata?.Tags" 
@@ -420,32 +420,32 @@
                             {{ tag }}
                         </el-tag>
                     </div>
-                    <span v-else style="color: #909399;">暂无标签</span>
+                    <span v-else style="color: #909399;">{{ $t('fileDetail.noTags') }}</span>
                 </el-descriptions-item>
             </el-descriptions>
         </el-dialog>
-        <el-dialog title="链接格式" v-model="showUrlDialog" :width="dialogWidth" :show-close="false" class="settings-dialog">
+        <el-dialog :title="$t('link.formatTitle')" v-model="showUrlDialog" :width="dialogWidth" :show-close="false" class="settings-dialog">
             <div class="dialog-section">
                 <div class="section-header">
-                    <span class="section-title">默认复制链接</span>
+                    <span class="section-title">{{ $t('link.defaultCopy') }}</span>
                 </div>
                 <div class="section-content">
                     <el-radio-group v-model="defaultUrlFormat" class="radio-card-group grid-2x2">
                         <el-radio label="originUrl" class="radio-card">
                             <font-awesome-icon icon="link" class="radio-icon"/>
-                            <span>原始链接</span>
+                            <span>{{ $t('link.originUrl') }}</span>
                         </el-radio>
                         <el-radio label="mdUrl" class="radio-card">
                             <font-awesome-icon icon="code" class="radio-icon"/>
-                            <span>Markdown</span>
+                            <span>{{ $t('link.markdown') }}</span>
                         </el-radio>
                         <el-radio label="htmlUrl" class="radio-card">
                             <font-awesome-icon icon="code-branch" class="radio-icon"/>
-                            <span>HTML</span>
+                            <span>{{ $t('link.html') }}</span>
                         </el-radio>
                         <el-radio label="bbUrl" class="radio-card">
                             <font-awesome-icon icon="quote-right" class="radio-icon"/>
-                            <span>BBCode</span>
+                            <span>{{ $t('link.bbcode') }}</span>
                         </el-radio>
                         <el-radio label="tgId" class="radio-card">
                             <font-awesome-icon icon="paper-plane" class="radio-icon"/>
@@ -453,7 +453,7 @@
                         </el-radio>
                         <el-radio label="s3Location" class="radio-card">
                             <font-awesome-icon icon="cloud" class="radio-icon"/>
-                            <span>S3链接</span>
+                            <span>S3</span>
                         </el-radio>
                     </el-radio-group>
                 </div>
@@ -461,25 +461,25 @@
 
             <div class="dialog-section">
                 <div class="section-header">
-                    <span class="section-title">自定义链接</span>
-                    <el-tooltip content="默认链接为https://your.domain/file/xxx.jpg <br> 如果启用自定义链接格式，只保留xxx.jpg部分，其他部分请自行输入" placement="top" raw-content>
+                    <span class="section-title">{{ $t('link.customTitle') }}</span>
+                    <el-tooltip :content="$t('link.customTip')" placement="top" raw-content>
                         <font-awesome-icon icon="question-circle" class="section-help-icon"/>
                     </el-tooltip>
                 </div>
                 <div class="section-content">
                     <div class="setting-item">
-                        <span class="setting-label">启用自定义</span>
+                        <span class="setting-label">{{ $t('link.enableCustom') }}</span>
                         <el-switch v-model="useCustomUrl" active-value="true" inactive-value="false" />
                     </div>
                     <div class="setting-item" v-if="useCustomUrl === 'true'">
-                        <span class="setting-label">自定义前缀</span>
-                        <el-input v-model="customUrlPrefix" placeholder="请输入自定义链接前缀" class="setting-input"/>
+                        <span class="setting-label">{{ $t('link.customPrefix') }}</span>
+                        <el-input v-model="customUrlPrefix" :placeholder="$t('link.customPrefixPlaceholder')" class="setting-input"/>
                     </div>
                 </div>
             </div>
 
             <div class="dialog-action">
-                <el-button type="primary" @click="showUrlDialog = false" class="confirm-btn">确定</el-button>
+                <el-button type="primary" @click="showUrlDialog = false" class="confirm-btn">{{ $t('common.confirm') }}</el-button>
             </div>
         </el-dialog>
 
@@ -510,36 +510,36 @@
                             <template v-if="!mobileActionIsFolder">
                                 <div class="bottom-sheet-item" @click="handleMobileAction('detail')">
                                     <font-awesome-icon icon="info-circle" class="bottom-sheet-icon"></font-awesome-icon>
-                                    <span>查看详情</span>
+                                    <span>{{ $t('common.details') }}</span>
                                 </div>
                                 <div class="bottom-sheet-item" @click="handleMobileAction('copy')">
                                     <font-awesome-icon icon="copy" class="bottom-sheet-icon"></font-awesome-icon>
-                                    <span>复制链接</span>
+                                    <span>{{ $t('publicBrowse.copyLink') }}</span>
                                 </div>
                                 <div class="bottom-sheet-item" @click="handleMobileAction('download')">
                                     <font-awesome-icon icon="download" class="bottom-sheet-icon"></font-awesome-icon>
-                                    <span>下载文件</span>
+                                    <span>{{ $t('common.download') }}</span>
                                 </div>
                                 <div class="bottom-sheet-item" @click="handleMobileAction('move')">
                                     <font-awesome-icon icon="file-export" class="bottom-sheet-icon"></font-awesome-icon>
-                                    <span>移动文件</span>
+                                    <span>{{ $t('common.move') }}</span>
                                 </div>
                                 <div class="bottom-sheet-item" @click="handleMobileAction('tag')">
                                     <font-awesome-icon icon="tags" class="bottom-sheet-icon"></font-awesome-icon>
-                                    <span>标签管理</span>
+                                    <span>{{ $t('dashboard.tagManagement') }}</span>
                                 </div>
                             </template>
                             <!-- 文件夹操作 -->
                             <template v-else>
                                 <div class="bottom-sheet-item" @click="handleMobileAction('move')">
                                     <font-awesome-icon icon="file-export" class="bottom-sheet-icon"></font-awesome-icon>
-                                    <span>移动文件夹</span>
+                                    <span>{{ $t('mobile.moveFolder') }}</span>
                                 </div>
                             </template>
                             <!-- 删除操作（通用） -->
                             <div class="bottom-sheet-item bottom-sheet-danger" @click="handleMobileAction('delete')">
                                 <font-awesome-icon icon="trash-alt" class="bottom-sheet-icon"></font-awesome-icon>
-                                <span>{{ mobileActionIsFolder ? '删除文件夹' : '删除文件' }}</span>
+                                <span>{{ mobileActionIsFolder ? $t('mobile.deleteFolder') : $t('mobile.deleteFile') }}</span>
                             </div>
                         </div>
                     </div>
@@ -552,14 +552,14 @@
                 <div v-if="showMobileDirectoryDrawer" class="mobile-drawer-overlay" @click="showMobileDirectoryDrawer = false">
                     <div class="mobile-drawer" @click.stop>
                         <div class="mobile-drawer-header">
-                            <span class="mobile-drawer-title">目录导航</span>
+                            <span class="mobile-drawer-title">{{ $t('mobile.dirNavigation') }}</span>
                             <font-awesome-icon icon="times" class="mobile-drawer-close" @click="showMobileDirectoryDrawer = false"/>
                         </div>
                         <div class="mobile-drawer-content">
                             <!-- 根目录 -->
                             <div class="mobile-drawer-item" :class="{ active: !currentPath }" @click="navigateToFolder(''); showMobileDirectoryDrawer = false;">
                                 <font-awesome-icon icon="home" class="mobile-drawer-item-icon"/>
-                                <span>根目录</span>
+                                <span>{{ $t('common.rootDir') }}</span>
                             </div>
                             <!-- 当前路径层级 -->
                             <div 
@@ -576,7 +576,7 @@
                             <!-- 返回上一级按钮 -->
                             <div v-if="currentPath" class="mobile-drawer-back" @click="handleGoBack">
                                 <font-awesome-icon icon="arrow-left" class="mobile-drawer-item-icon"/>
-                                <span>返回上一级</span>
+                                <span>{{ $t('mobile.goBack') }}</span>
                             </div>
                         </div>
                     </div>
@@ -963,20 +963,20 @@ methods: {
             .then(() => {
                 this.$message({
                     type: 'success',
-                    message: '复制成功'
+                    message: this.$t('message.copySuccess')
                 });
             })
             .catch(() => {
                 this.$message({
                     type: 'error',
-                    message: '复制失败'
+                    message: this.$t('message.copyFailed')
                 });
             });
     },
     handleDetailDelete(key) {
-        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        this.$confirm(this.$t('message.deleteFileConfirm'), this.$t('common.info'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
         }).then(() => {
         fetchWithAuth(`/api/manage/delete/${key}`, { method: 'GET' })
@@ -992,16 +992,16 @@ methods: {
             })
             .then(() => {
             this.updateStats(-1, false);
-            this.$message.success('删除成功');
+            this.$message.success(this.$t('message.deleteSuccess'));
             this.showdetailDialog = false;
             })
-            .catch(() => this.$message.error('删除失败'));
+            .catch(() => this.$message.error(this.$t('message.deleteFailed')));
         }).catch(() => console.log('已取消删除'));
     },
     handleBlock(key) {
-        this.$confirm('此操作将把该文件加入黑名单, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
+        this.$confirm(this.$t('message.blockConfirm'), this.$t('common.info'), {
+            confirmButtonText: this.$t('common.confirm'),
+            cancelButtonText: this.$t('common.cancel'),
             type: 'warning'
         }).then(() => {
         fetchWithAuth(`/api/manage/block/${key}`, { method: 'GET' })
@@ -1016,17 +1016,17 @@ methods: {
                 }
             })
             .then(() => {
-                this.$message.success('加入黑名单成功');
+                this.$message.success(this.$t('message.blockSuccess'));
             })
-            .catch(() => this.$message.error('加入黑名单失败'));
+            .catch(() => this.$message.error(this.$t('message.blockFailed')));
         }).catch(
             () => console.log('已取消加入黑名单')
         );
     },
     handleWhite(key) {
-        this.$confirm('此操作将把该文件加入白名单, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
+        this.$confirm(this.$t('message.whiteConfirm'), this.$t('common.info'), {
+            confirmButtonText: this.$t('common.confirm'),
+            cancelButtonText: this.$t('common.cancel'),
             type: 'warning'
         }).then(() => {
         fetchWithAuth(`/api/manage/white/${key}`, { method: 'GET' })
@@ -1041,9 +1041,9 @@ methods: {
                 }
             })
             .then(() => {
-                this.$message.success('加入白名单成功');
+                this.$message.success(this.$t('message.whiteSuccess'));
             })
-            .catch(() => this.$message.error('加入白名单失败'));
+            .catch(() => this.$message.error(this.$t('message.whiteFailed')));
         }).catch(
             () => console.log('已取消加入白名单')
         );
@@ -1052,9 +1052,9 @@ methods: {
         // 判断是否为文件夹
         const isFolder = this.tableData.find(file => file.name === key).isFolder;
 
-        this.$confirm(`此操作将永久删除${isFolder ? '文件夹' : '该文件'}, 是否继续?`, '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        this.$confirm(this.$t(isFolder ? 'message.deleteFolderConfirm' : 'message.deleteFileConfirm'), this.$t('common.info'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
         }).then(() => {
         fetchWithAuth(`/api/manage/delete/${key}?folder=${isFolder}`, { method: 'GET' })
@@ -1071,15 +1071,15 @@ methods: {
             .then(() => {
                 this.updateStats(-1, false);
                 fileManager.removeFile(key);
-                this.$message.success('删除成功');
+                this.$message.success(this.$t('message.deleteSuccess'));
             })
-            .catch(() => this.$message.error('删除失败'));
+            .catch(() => this.$message.error(this.$t('message.deleteFailed')));
         }).catch(() => console.log('已取消删除'));
     },
     handleBatchDelete() {
-        this.$confirm('此操作将永久删除选中的文件及文件夹, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        this.$confirm(this.$t('message.batchDeleteConfirm'), this.$t('common.info'), {
+        confirmButtonText: this.$t('common.confirm'),
+        cancelButtonText: this.$t('common.cancel'),
         type: 'warning'
         }).then(() => {
         const promises = this.selectedFiles.map(file => {
@@ -1102,9 +1102,9 @@ methods: {
                 });
                 this.selectedFiles = [];
                 this.updateStats(-successNum, false);
-                this.$message.success('批量删除成功');
+                this.$message.success(this.$t('message.batchDeleteSuccess'));
             })
-            .catch(() => this.$message.error('批量删除失败'));
+            .catch(() => this.$message.error(this.$t('message.batchDeleteFailed')));
         }).catch(() => console.log('已取消批量删除'));
     },
     handleBatchCopy() {
@@ -1169,7 +1169,7 @@ methods: {
         tmpLinks = tmpLinks.replace(/^\s*[\r\n]/gm, '');
 
         const links = tmpLinks;
-        navigator.clipboard ? navigator.clipboard.writeText(links).then(() => this.$message.success('批量复制链接成功')) :
+        navigator.clipboard ? navigator.clipboard.writeText(links).then(() => this.$message.success(this.$t('message.batchCopySuccess'))) :
         this.copyToClipboardFallback(links);
     },
     copyToClipboardFallback(text) {
@@ -1182,7 +1182,7 @@ methods: {
         textarea.select();
         document.execCommand('copy');
         document.body.removeChild(textarea);
-        this.$message.success('批量复制链接成功');
+        this.$message.success(this.$t('message.batchCopySuccess'));
     },
     handleCopy(index, key) {
         let text = '';
@@ -1229,7 +1229,7 @@ methods: {
                     break;
             }
         }
-        navigator.clipboard ? navigator.clipboard.writeText(text).then(() => this.$message.success('复制文件链接成功')) :
+        navigator.clipboard ? navigator.clipboard.writeText(text).then(() => this.$message.success(this.$t('message.copyLinkSuccess'))) :
         this.copyToClipboardFallback(text);
     },
     async loadMoreData() {
@@ -1246,7 +1246,7 @@ methods: {
             // 获取新的文件列表后
             await this.fetchFileList();
         } catch (error) {
-            this.$message.error('加载更多文件失败，请检查网络连接');
+            this.$message.error(this.$t('message.loadMoreFailed'));
         } finally {
             this.loading = false;
         }
@@ -1323,18 +1323,18 @@ methods: {
     },
     handleMove(index, key) {
         // 弹窗输入新的文件夹路径
-        this.$prompt('请输入新的目录', '移动文件', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
+        this.$prompt(this.$t('message.enterNewDir'), this.$t('message.moveFile'), {
+            confirmButtonText: this.$t('common.confirm'),
+            cancelButtonText: this.$t('common.cancel'),
             inputPattern: /^\/([a-zA-Z0-9_\u4e00-\u9fa5]+(\/[a-zA-Z0-9_\u4e00-\u9fa5]+)*)?$/,
-            inputErrorMessage: '请输入/开头的正确目录路径'
+            inputErrorMessage: this.$t('message.invalidDirPath')
         }).then(({ value }) => {
             // 去掉开头的 /，结尾若没有 /，则加上
             const newPath = value.replace(/^\/+/, '') + (value.endsWith('/') ? '' : value === '' ? '' : '/');
             const isFolder = this.tableData.find(file => file.name === key).isFolder;
             // 判断目标文件夹是否是当前文件夹
             if (newPath === this.currentPath) {
-                this.$message.warning('目标文件夹不能是当前文件夹');
+                this.$message.warning(this.$t('message.sameFolder'));
                 return;
             }
             fetchWithAuth(`/api/manage/move/${key}?folder=${isFolder}&dist=${newPath}`, { method: 'GET' })
@@ -1360,7 +1360,7 @@ methods: {
                             });
                         }
                         this.updateStats(-1, false);
-                        this.$message.success('移动成功');
+                        this.$message.success(this.$t('message.moveSuccess'));
                     } else {
                         return Promise.reject('请求失败');
                     }
@@ -1369,22 +1369,22 @@ methods: {
                     // 刷新本地文件列表
                     this.refreshLocalFileList();
                 })
-                .catch(() => this.$message.error('移动失败'));
+                .catch(() => this.$message.error(this.$t('message.moveFailed')));
         }).catch(() => console.log('已取消移动文件'));
     },
     handleBatchMove() {
         // 弹窗输入新的文件夹路径
-        this.$prompt('请输入新的目录', '移动文件', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
+        this.$prompt(this.$t('message.enterNewDir'), this.$t('message.moveFile'), {
+            confirmButtonText: this.$t('common.confirm'),
+            cancelButtonText: this.$t('common.cancel'),
             inputPattern: /^\/([a-zA-Z0-9_\u4e00-\u9fa5]+(\/[a-zA-Z0-9_\u4e00-\u9fa5]+)*)?$/,
-            inputErrorMessage: '请输入/开头的正确目录路径'
+            inputErrorMessage: this.$t('message.invalidDirPath')
         }).then(({ value }) => {
             // 去掉开头的 /，结尾若没有 /，则加上
             const newPath = value.replace(/^\/+/, '') + (value.endsWith('/') ? '' : value === '' ? '' : '/');
             // 判断目标文件夹是否是当前文件夹
             if (newPath === this.currentPath) {
-                this.$message.warning('目标文件夹不能是当前文件夹');
+                this.$message.warning(this.$t('message.sameFolder'));
                 return;
             }
             const promises = this.selectedFiles.map(file => {
@@ -1422,19 +1422,19 @@ methods: {
                         });
                     });
                     this.updateStats(-successNum, false);
-                    this.$message.success('移动成功');
+                    this.$message.success(this.$t('message.moveSuccess'));
                 })
                 .then(() => {
                     // 刷新本地文件列表
                     this.refreshLocalFileList();
                 })
-                .catch(() => this.$message.error('移动失败'));
+                .catch(() => this.$message.error(this.$t('message.moveFailed')));
         }).catch(() => console.log('已取消移动文件'));
     },
     handleBatchBlock(){
-        this.$confirm('此操作将把选中的文件加入黑名单, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
+        this.$confirm(this.$t('message.batchBlockConfirm'), this.$t('common.info'), {
+            confirmButtonText: this.$t('common.confirm'),
+            cancelButtonText: this.$t('common.cancel'),
             type: 'warning'
         }).then(() => {
             // 跳过文件夹
@@ -1455,15 +1455,15 @@ methods: {
                             }
                         }
                     });
-                    this.$message.success('批量加入黑名单成功');
+                    this.$message.success(this.$t('message.batchBlockSuccess'));
                 })
-                .catch(() => this.$message.error('批量加入黑名单失败'));
+                .catch(() => this.$message.error(this.$t('message.batchBlockFailed')));
         }).catch(() => console.log('已取消批量加入黑名单'));
     },
     handleBatchWhite(){
-        this.$confirm('此操作将把选中的文件加入白名单, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
+        this.$confirm(this.$t('message.batchWhiteConfirm'), this.$t('common.info'), {
+            confirmButtonText: this.$t('common.confirm'),
+            cancelButtonText: this.$t('common.cancel'),
             type: 'warning'
         }).then(() => {
             // 跳过文件夹
@@ -1484,9 +1484,9 @@ methods: {
                             }
                         }
                     });
-                    this.$message.success('批量加入白名单成功');
+                    this.$message.success(this.$t('message.batchWhiteSuccess'));
                 })
-                .catch(() => this.$message.error('批量加入白名单失败'));
+                .catch(() => this.$message.error(this.$t('message.batchWhiteFailed')));
         }).catch(() => console.log('已取消批量加入白名单'));
     },
     handleBatchDownload() {
@@ -1729,7 +1729,7 @@ methods: {
 
         } catch (error) {
             console.error('Error fetching file list:', error);
-            this.$message.error('获取文件列表失败');
+            this.$message.error(this.$t('message.fetchFileListFailed'));
         } finally {
             this.loading = false;
         }
@@ -1753,7 +1753,7 @@ methods: {
             }
         } catch (error) {
             console.error('Error refreshing file list:', error);
-            this.$message.error('刷新失败，请重试');
+            this.$message.error(this.$t('message.refreshFailed'));
         } finally {
             this.refreshLoading = false;
             this.loading = false;
@@ -1767,7 +1767,7 @@ methods: {
             await this.fetchFileList();
         } catch (error) {
             console.error('Error refreshing local file list:', error);
-            this.$message.error('刷新失败，请重试');
+            this.$message.error(this.$t('message.refreshFailed'));
         } finally {
             this.refreshLoading = false;
             this.loading = false;
@@ -1780,7 +1780,7 @@ methods: {
     },
     handleBatchTagManagement() {
         if (this.selectedFiles.length === 0) {
-            this.$message.warning('请先选择文件');
+            this.$message.warning(this.$t('message.selectFilesFirst'));
             return;
         }
         this.showBatchTagDialog = true;
@@ -1829,7 +1829,7 @@ mounted() {
         })
         .catch((err) => {
             if (err.message !== 'Unauthorized') {
-                this.$message.error('同步数据时出错，请检查网络连接');
+                this.$message.error(this.$t('customerConfig.syncError'));
             }
         })
         .finally(() => {

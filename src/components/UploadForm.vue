@@ -17,7 +17,7 @@
             <el-icon class="el-icon--upload" :class="{'upload-list-busy': fileList.length}">
                 <CameraFilled/>
             </el-icon>
-            <div class="el-upload__text" :class="{'upload-list-busy': fileList.length}"><em>拖拽</em> <em>点击</em> 或 <em>Ctrl + V</em> 粘贴上传</div>
+            <div class="el-upload__text" :class="{'upload-list-busy': fileList.length}"><em>{{ $t('upload.dragTip') }}</em> {{ $t('upload.clickTip') }} <em>Ctrl + V</em> {{ $t('upload.pasteTip') }}</div>
         </el-upload>
         <div v-else-if="uploadMethod === 'paste'" class="upload-card">
             <el-card 
@@ -27,7 +27,7 @@
                 <el-input
                     v-model="pastedUrls"
                     class="upload-card-textarea"
-                    placeholder="粘贴外链上传，多个外链用换行分隔"
+                    :placeholder="$t('upload.pasteUrlPlaceholder') || '粘贴外链上传，多个外链用换行分隔'"
                     type="textarea"
                     :rows="fileList.length ? 4 : 14"
                 />
@@ -38,15 +38,15 @@
                         :size="pasteCardMethodButtonSize"
                         @click="handleUploadPasteUrls"
                     >
-                        上 传
+                        {{ $t('common.upload') }}
                     </el-button>
                     <el-radio-group 
                         v-model="pasteUploadMethod" 
                         class="paste-card-method-group"
                         :size="pasteCardMethodButtonSize"
                     >
-                        <el-radio-button label="save">转存</el-radio-button>
-                        <el-radio-button label="external">外链</el-radio-button>
+                        <el-radio-button label="save">{{ $t('upload.saveMode') || '转存' }}</el-radio-button>
+                        <el-radio-button label="external">{{ $t('upload.externalMode') || '外链' }}</el-radio-button>
                     </el-radio-group>
                 </div>
             </el-card>
@@ -62,12 +62,12 @@
                         </el-text>
                         <div class="upload-list-dashboard-action">
                             <div class="modern-action-group">
-                                <el-tooltip :disabled="disableTooltip" content="整体复制" placement="top">
+                                <el-tooltip :disabled="disableTooltip" :content="$t('upload.copyAll') || '整体复制'" placement="top">
                                     <button class="modern-action-btn" @click="copyAll">
                                         <font-awesome-icon icon="copy" />
                                     </button>
                                 </el-tooltip>
-                                <el-tooltip :disabled="disableTooltip" content="失败重试" placement="top">
+                                <el-tooltip :disabled="disableTooltip" :content="$t('upload.retryFailed') || '失败重试'" placement="top">
                                     <el-dropdown>
                                         <button class="modern-action-btn" @click="retryError">
                                             <font-awesome-icon icon="redo" />
@@ -76,7 +76,7 @@
                                             <el-dropdown-menu class="modern-dropdown-menu">
                                                 <el-dropdown-item>
                                                     <div class="modern-dropdown-item-content">
-                                                        <span>自动重试</span>
+                                                        <span>{{ $t('upload.autoRetry') || '自动重试' }}</span>
                                                         <el-switch v-model="autoReUpload" @change="handleAutoRetryChange" size="small" />
                                                     </div>
                                                 </el-dropdown-item>
@@ -84,15 +84,15 @@
                                         </template>
                                     </el-dropdown>
                                 </el-tooltip>
-                                <el-tooltip :disabled="disableTooltip" content="清空列表" placement="top">
+                                <el-tooltip :disabled="disableTooltip" :content="$t('upload.clearList') || '清空列表'" placement="top">
                                     <el-dropdown>
                                         <button class="modern-action-btn modern-action-btn-danger">
                                             <font-awesome-icon icon="trash-alt" />
                                         </button>
                                         <template #dropdown>
                                             <el-dropdown-menu class="modern-dropdown-menu">
-                                                <el-dropdown-item @click="clearFileList">清空全部</el-dropdown-item>
-                                                <el-dropdown-item @click="clearSuccessList">清空已上传</el-dropdown-item>
+                                                <el-dropdown-item @click="clearFileList">{{ $t('upload.clearAll') || '清空全部' }}</el-dropdown-item>
+                                                <el-dropdown-item @click="clearSuccessList">{{ $t('upload.clearUploaded') || '清空已上传' }}</el-dropdown-item>
                                             </el-dropdown-menu>
                                         </template>
                                     </el-dropdown>

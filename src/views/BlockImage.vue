@@ -28,9 +28,9 @@
       
       <!-- 提示信息 -->
       <div class="status-info">
-        <h1 class="status-title">图片访问被禁止</h1>
+        <h1 class="status-title">{{ $t('error.imageBlocked') }}</h1>
         <p class="status-description">
-          抱歉，当前图片已被禁止访问。
+          {{ $t('error.imageBlockedDesc') }}
         </p>
         <p class="status-description-en">
           Sorry, current image is prohibited from being accessed.
@@ -45,7 +45,7 @@
             @click="goHome"
           >
             <font-awesome-icon icon="home" class="btn-icon" />
-            返回首页
+            {{ $t('error.backHome') }}
           </el-button>
           
           <el-button 
@@ -54,25 +54,25 @@
             @click="goBack"
           >
             <font-awesome-icon icon="arrow-left" class="btn-icon" />
-            返回上页
+            {{ $t('common.back') }}
           </el-button>
         </div>
         
         <!-- 帮助信息 -->
         <div class="help-info">
-          <p class="help-text">您可以尝试：</p>
+          <p class="help-text">{{ $t('error.youMayTry') || 'You may try:' }}</p>
           <div class="quick-links">
             <a href="javascript:void(0)" @click="goHome" class="quick-link">
               <font-awesome-icon icon="cloud-upload-alt" />
-              图片上传
+              {{ $t('common.upload') }}
             </a>
             <a href="javascript:void(0)" @click="refreshPage" class="quick-link">
               <font-awesome-icon icon="redo" />
-              刷新页面
+              {{ $t('common.refresh') }}
             </a>
             <a href="javascript:void(0)" @click="contactSupport" class="quick-link">
               <font-awesome-icon icon="question-circle" />
-              联系支持
+              {{ $t('error.contactSupport') || 'Contact Support' }}
             </a>
           </div>
         </div>

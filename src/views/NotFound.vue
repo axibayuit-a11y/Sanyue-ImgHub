@@ -30,9 +30,9 @@
       
       <!-- 错误信息 -->
       <div class="error-info">
-        <h1 class="error-title">页面走丢了</h1>
+        <h1 class="error-title">{{ $t('error.notFound') }}</h1>
         <p class="error-description">
-          抱歉，您访问的页面可能已被删除、更名或暂时不可用
+          {{ $t('error.notFoundDesc') }}
         </p>
         
         <!-- 操作按钮 -->
@@ -44,7 +44,7 @@
             @click="goHome"
           >
             <font-awesome-icon icon="home" class="btn-icon" />
-            返回首页
+            {{ $t('error.backHome') }}
           </el-button>
           
           <el-button 
@@ -53,25 +53,25 @@
             @click="goBack"
           >
             <font-awesome-icon icon="arrow-left" class="btn-icon" />
-            返回上页
+            {{ $t('common.back') }}
           </el-button>
         </div>
         
         <!-- 帮助链接 -->
         <div class="help-links">
-          <p class="help-text">也许您想要：</p>
+          <p class="help-text">{{ $t('error.youMayWant') || 'You may want:' }}</p>
           <div class="quick-links">
             <a href="javascript:void(0)" @click="goHome" class="quick-link">
               <font-awesome-icon icon="cloud-upload-alt" />
-              图片上传
+              {{ $t('common.upload') }}
             </a>
             <a href="javascript:void(0)" @click="goDashboard" class="quick-link">
               <font-awesome-icon icon="tachometer-alt" />
-              管理面板
+              {{ $t('nav.dashboard') }}
             </a>
             <a href="javascript:void(0)" @click="refreshPage" class="quick-link">
               <font-awesome-icon icon="redo" />
-              刷新页面
+              {{ $t('common.refresh') }}
             </a>
           </div>
         </div>

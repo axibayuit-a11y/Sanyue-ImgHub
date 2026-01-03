@@ -2,8 +2,8 @@
     <div class="upload-settings" v-loading="loading">   
         <!-- 一级设置：上传渠道 -->
         <div class="upload-channel">
-        <h3 class="first-title">上传渠道
-            <el-tooltip content="设置每类上传渠道的详细配置 <br> 点击“保存设置”会同时保存对每类配置的修改" placement="right" raw-content>
+        <h3 class="first-title">{{ $t('uploadChannel.title') }}
+            <el-tooltip :content="$t('uploadChannel.channelTip')" placement="right" raw-content>
                 <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
             </el-tooltip>
         </h3>
@@ -20,8 +20,8 @@
 
         <!-- 二级设置：具体渠道配置 -->
         <div class="channel-settings">
-        <h4 class="second-title">{{ activeChannelLabel }} 设置
-            <el-tooltip v-if="activeChannel === 'telegram'" content="为保证兼容性，v2版本前设置的 Telegram 相关环境变量请保留" placement="right">
+        <h4 class="second-title">{{ activeChannelLabel }} {{ $t('uploadChannel.settings') }}
+            <el-tooltip v-if="activeChannel === 'telegram'" :content="$t('uploadChannel.telegramTip')" placement="right">
                 <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
             </el-tooltip>
         </h4>
@@ -32,7 +32,7 @@
                 label-position="top"
                 class="channel-form"
             >
-                <el-form-item label="负载均衡">
+                <el-form-item :label="$t('uploadChannel.loadBalance')">
                     <el-switch v-model="telegramSettings.loadBalance.enabled"/>
                 </el-form-item>
             </el-form>
@@ -46,16 +46,16 @@
                 ref = "tgChannelForm"
                 class="channel-form"
             >
-                <el-form-item label="渠道名" prop="name">
+                <el-form-item :label="$t('uploadChannel.channelName')" prop="name">
                     <el-input v-model="channel.name" :disabled="channel.fixed"/>
                 </el-form-item>
-                <el-form-item label="启用渠道" prop="enabled">
+                <el-form-item :label="$t('uploadChannel.enableChannel')" prop="enabled">
                     <el-switch v-model="channel.enabled"/>
                 </el-form-item>
-                <el-form-item label="Bot Token" prop="botToken">
+                <el-form-item :label="$t('uploadChannel.botToken')" prop="botToken">
                     <el-input v-model="channel.botToken" :disabled="channel.fixed" type="password" show-password autocomplete="new-password"/>
                 </el-form-item>
-                <el-form-item label="Chat ID" prop="chatId">
+                <el-form-item :label="$t('uploadChannel.chatId')" prop="chatId">
                     <el-input v-model="channel.chatId" :disabled="channel.fixed" type="password" show-password autocomplete="new-password"/>
                 </el-form-item>
                 <!-- 删除 -->
@@ -74,16 +74,16 @@
                 label-position="top"
                 class="channel-form"
             >
-                <el-form-item label="渠道名">
+                <el-form-item :label="$t('uploadChannel.channelName')">
                     <el-input v-model="channel.name" :disabled="channel.fixed"/>
                 </el-form-item>
-                <el-form-item label="启用渠道">
+                <el-form-item :label="$t('uploadChannel.enableChannel')">
                     <el-switch v-model="channel.enabled"/>
                 </el-form-item>
                 <el-form-item>
                     <template #label>
-                        公开访问链接
-                        <el-tooltip content="若启用图像审查，请设置该项" placement="top">
+                        {{ $t('uploadChannel.publicAccessUrl') }}
+                        <el-tooltip :content="$t('uploadChannel.publicAccessUrlTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
@@ -92,20 +92,20 @@
                 <!-- 容量限制配置 -->
                 <el-form-item>
                     <template #label>
-                        容量限制
-                        <el-tooltip content="启用后，当存储容量达到阈值时，该渠道将自动停止接收新文件，上传会自动切换到其他可用渠道" placement="top">
+                        {{ $t('uploadChannel.quotaLimit') }}
+                        <el-tooltip :content="$t('uploadChannel.quotaLimitTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
                     <el-switch v-model="channel.quota.enabled" @change="(val) => onQuotaEnabledChange(val, channel)"/>
                 </el-form-item>
-                <el-form-item v-if="channel.quota.enabled" label="容量上限 (GB)">
+                <el-form-item v-if="channel.quota.enabled" :label="$t('uploadChannel.quotaLimitGB')">
                     <el-input-number v-model="channel.quota.limitGB" :min="0.1" :step="1" :precision="1"/>
                 </el-form-item>
                 <el-form-item v-if="channel.quota.enabled">
                     <template #label>
-                        阈值 (%)
-                        <el-tooltip content="当已用容量达到此百分比时停止写入，默认95%" placement="top">
+                        {{ $t('uploadChannel.threshold') }}
+                        <el-tooltip :content="$t('uploadChannel.thresholdTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
@@ -114,7 +114,7 @@
                 <!-- 容量使用情况显示 -->
                 <el-form-item v-if="channel.quota.enabled && channel.name">
                     <template #label>
-                        当前用量
+                        {{ $t('uploadChannel.currentUsage') }}
                         <el-button link type="primary" @click="refreshQuota" :loading="quotaLoading" style="margin-left: 8px;">
                             <font-awesome-icon icon="sync-alt" />
                         </el-button>
@@ -142,7 +142,7 @@
                 label-position="top"
                 class="channel-form"
             >
-                <el-form-item label="负载均衡">
+                <el-form-item :label="$t('uploadChannel.loadBalance')">
                     <el-switch v-model="s3Settings.loadBalance.enabled"/>
                 </el-form-item>
             </el-form>
@@ -155,59 +155,59 @@
                 ref = "s3ChannelForm"
                 class="channel-form"
             >
-                <el-form-item label="渠道名" prop="name">
+                <el-form-item :label="$t('uploadChannel.channelName')" prop="name">
                     <el-input v-model="channel.name" :disabled="channel.fixed"/>
                 </el-form-item>
-                <el-form-item label="启用渠道" prop="enabled">
+                <el-form-item :label="$t('uploadChannel.enableChannel')" prop="enabled">
                     <el-switch v-model="channel.enabled"/>
                 </el-form-item>
                 <el-form-item prop="endpoint">
                     <template #label>
-                        Endpoint
-                        <el-tooltip content="服务提供商 Endpoint，例如 https://s3.us-east-005.backblazeb2.com" placement="top">
+                        {{ $t('uploadChannel.endpoint') }}
+                        <el-tooltip :content="$t('uploadChannel.endpointTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
                     <el-input v-model="channel.endpoint" :disabled="channel.fixed"/>
                 </el-form-item>
-                <el-form-item label="路径风格" prop="pathStyle">
+                <el-form-item prop="pathStyle">
                     <template #label>
-                        路径风格
-                        <el-tooltip content="S3 路径风格/虚拟主机风格，使用 OpenList 作为 S3 提供者时需打开此开关 <br> 路径风格：https://s3.example.com/下方存储桶名称/文件路径 <br> 虚拟主机风格：https://下方存储桶名称.s3.example.com/文件路径" placement="top" raw-content>
+                        {{ $t('uploadChannel.pathStyle') }}
+                        <el-tooltip :content="$t('uploadChannel.pathStyleTip')" placement="top" raw-content>
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
                     <el-switch v-model="channel.pathStyle" :disabled="channel.fixed"/>
                 </el-form-item>
-                <el-form-item label="存储桶名称" prop="bucketName">
+                <el-form-item :label="$t('uploadChannel.bucketName')" prop="bucketName">
                     <el-input v-model="channel.bucketName" :disabled="channel.fixed"/>
                 </el-form-item>
-                <el-form-item label="存储桶区域" prop="region">
-                    <el-input v-model="channel.region" placeholder="默认填写 auto 即可" :disabled="channel.fixed"/>
+                <el-form-item :label="$t('uploadChannel.bucketRegion')" prop="region">
+                    <el-input v-model="channel.region" :placeholder="$t('uploadChannel.regionPlaceholder')" :disabled="channel.fixed"/>
                 </el-form-item>
-                <el-form-item label="访问密钥 ID" prop="accessKeyId">
+                <el-form-item :label="$t('uploadChannel.accessKeyId')" prop="accessKeyId">
                     <el-input v-model="channel.accessKeyId" :disabled="channel.fixed" type="password" show-password autocomplete="new-password"/>
                 </el-form-item>
-                <el-form-item label="机密访问密钥" prop="secretAccessKey">
+                <el-form-item :label="$t('uploadChannel.secretAccessKey')" prop="secretAccessKey">
                     <el-input v-model="channel.secretAccessKey" :disabled="channel.fixed" type="password" show-password autocomplete="new-password"/>
                 </el-form-item>
                 <!-- 容量限制配置 -->
                 <el-form-item>
                     <template #label>
-                        容量限制
-                        <el-tooltip content="启用后，当存储容量达到阈值时，该渠道将自动停止接收新文件，上传会自动切换到其他可用渠道" placement="top">
+                        {{ $t('uploadChannel.quotaLimit') }}
+                        <el-tooltip :content="$t('uploadChannel.quotaLimitTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
                     <el-switch v-model="channel.quota.enabled" @change="(val) => onQuotaEnabledChange(val, channel)"/>
                 </el-form-item>
-                <el-form-item v-if="channel.quota.enabled" label="容量上限 (GB)">
+                <el-form-item v-if="channel.quota.enabled" :label="$t('uploadChannel.quotaLimitGB')">
                     <el-input-number v-model="channel.quota.limitGB" :min="0.1" :step="1" :precision="1"/>
                 </el-form-item>
                 <el-form-item v-if="channel.quota.enabled">
                     <template #label>
-                        阈值 (%)
-                        <el-tooltip content="当已用容量达到此百分比时停止写入，默认95%" placement="top">
+                        {{ $t('uploadChannel.threshold') }}
+                        <el-tooltip :content="$t('uploadChannel.thresholdTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
@@ -216,7 +216,7 @@
                 <!-- 容量使用情况显示 -->
                 <el-form-item v-if="channel.quota.enabled && channel.name">
                     <template #label>
-                        当前用量
+                        {{ $t('uploadChannel.currentUsage') }}
                         <el-button link type="primary" @click="refreshQuota" :loading="quotaLoading" style="margin-left: 8px;">
                             <font-awesome-icon icon="sync-alt" />
                         </el-button>
@@ -250,7 +250,7 @@
                 label-position="top"
                 class="channel-form"
             >
-                <el-form-item label="负载均衡">
+                <el-form-item :label="$t('uploadChannel.loadBalance')">
                     <el-switch v-model="discordSettings.loadBalance.enabled"/>
                 </el-form-item>
             </el-form>
@@ -264,31 +264,31 @@
                 ref="discordChannelForm"
                 class="channel-form"
             >
-                <el-form-item label="渠道名" prop="name">
+                <el-form-item :label="$t('uploadChannel.channelName')" prop="name">
                     <el-input v-model="channel.name" :disabled="channel.fixed"/>
                 </el-form-item>
-                <el-form-item label="启用渠道" prop="enabled">
+                <el-form-item :label="$t('uploadChannel.enableChannel')" prop="enabled">
                     <el-switch v-model="channel.enabled"/>
                 </el-form-item>
-                <el-form-item label="Bot Token" prop="botToken">
+                <el-form-item :label="$t('uploadChannel.botToken')" prop="botToken">
                     <el-input v-model="channel.botToken" :disabled="channel.fixed" type="password" show-password autocomplete="new-password"/>
                 </el-form-item>
-                <el-form-item label="Channel ID" prop="channelId">
+                <el-form-item :label="$t('uploadChannel.channelId')" prop="channelId">
                     <el-input v-model="channel.channelId" :disabled="channel.fixed" type="password" show-password autocomplete="new-password"/>
                 </el-form-item>
                 <el-form-item>
                     <template #label>
-                        代理域名
-                        <el-tooltip content="可选，用于国内访问 Discord CDN，填写代理域名（不含 https://）" placement="top">
+                        {{ $t('uploadChannel.proxyDomain') }}
+                        <el-tooltip :content="$t('uploadChannel.proxyDomainTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
-                    <el-input v-model="channel.proxyUrl" placeholder="例如: your-proxy.example.com"/>
+                    <el-input v-model="channel.proxyUrl" :placeholder="$t('uploadChannel.proxyDomainPlaceholder')"/>
                 </el-form-item>
                 <el-form-item>
                     <template #label>
-                        Nitro 会员
-                        <el-tooltip content="开启后单文件限制提升至 25MB，关闭则为 10MB" placement="top">
+                        {{ $t('uploadChannel.nitroMember') }}
+                        <el-tooltip :content="$t('uploadChannel.nitroTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
@@ -297,13 +297,13 @@
                 <el-form-item>
                     <div class="discord-limit-tip">
                         <font-awesome-icon icon="info-circle" style="margin-right: 5px;"/>
-                        {{ channel.isNitro ? 'Nitro 会员单文件限制 25MB' : 'Discord 免费用户单文件限制 10MB' }}
+                        {{ channel.isNitro ? $t('uploadChannel.nitroLimit') : $t('uploadChannel.freeLimit') }}
                     </div>
                 </el-form-item>
                 <el-form-item>
                     <div class="discord-rate-limit-tip">
                         <font-awesome-icon icon="exclamation-triangle" style="margin-right: 5px;"/>
-                        Discord 有接口频率限制，不建议将其用作大规模并发场景
+                        {{ $t('uploadChannel.discordRateLimit') }}
                     </div>
                 </el-form-item>
                 <!-- 删除 -->
@@ -322,7 +322,7 @@
                 label-position="top"
                 class="channel-form"
             >
-                <el-form-item label="负载均衡">
+                <el-form-item :label="$t('uploadChannel.loadBalance')">
                     <el-switch v-model="huggingfaceSettings.loadBalance.enabled"/>
                 </el-form-item>
             </el-form>
@@ -336,28 +336,28 @@
                 ref="huggingfaceChannelForm"
                 class="channel-form"
             >
-                <el-form-item label="渠道名" prop="name">
+                <el-form-item :label="$t('uploadChannel.channelName')" prop="name">
                     <el-input v-model="channel.name" :disabled="channel.fixed"/>
                 </el-form-item>
-                <el-form-item label="启用渠道" prop="enabled">
+                <el-form-item :label="$t('uploadChannel.enableChannel')" prop="enabled">
                     <el-switch v-model="channel.enabled"/>
                 </el-form-item>
                 <el-form-item prop="repo">
                     <template #label>
-                        仓库名
-                        <el-tooltip content="格式：用户名/仓库名，例如 username/my-images" placement="top">
+                        {{ $t('uploadChannel.repoName') }}
+                        <el-tooltip :content="$t('uploadChannel.repoNameTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
-                    <el-input v-model="channel.repo" :disabled="channel.fixed" placeholder="username/repo-name"/>
+                    <el-input v-model="channel.repo" :disabled="channel.fixed" :placeholder="$t('uploadChannel.repoNamePlaceholder')"/>
                 </el-form-item>
-                <el-form-item label="Access Token" prop="token">
+                <el-form-item :label="$t('uploadChannel.accessToken')" prop="token">
                     <el-input v-model="channel.token" :disabled="channel.fixed" type="password" show-password autocomplete="new-password"/>
                 </el-form-item>
                 <el-form-item>
                     <template #label>
-                        私有仓库
-                        <el-tooltip content="开启后仓库将设为私有，访问时需要通过服务器代理" placement="top">
+                        {{ $t('uploadChannel.privateRepo') }}
+                        <el-tooltip :content="$t('uploadChannel.privateRepoTip')" placement="top">
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
@@ -366,7 +366,7 @@
                 <el-form-item>
                     <div class="huggingface-tip">
                         <font-awesome-icon icon="info-circle" style="margin-right: 5px;"/>
-                        {{ channel.isPrivate ? '私有仓库限制 100GB，访问时服务器会代理请求' : '公开仓库无容量限制，文件可直接访问' }}
+                        {{ channel.isPrivate ? $t('uploadChannel.privateRepoLimit') : $t('uploadChannel.publicRepoLimit') }}
                     </div>
                 </el-form-item>
                 <!-- 删除 -->
@@ -385,7 +385,7 @@
             <el-button type="primary" @click="addChannel">
                 <font-awesome-icon icon="plus" />
             </el-button>
-            <el-button type="primary" @click="saveSettings">保存设置</el-button>
+            <el-button type="primary" @click="saveSettings">{{ $t('uploadChannel.saveSettings') }}</el-button>
         </div>
     </div>
 </template>
@@ -414,16 +414,15 @@ data() {
 
     tgRules: {
         name: [
-            { required: true, message: '请输入渠道名', trigger: 'blur' },
+            { required: true, message: this.$t('uploadChannel.channelNameRequired'), trigger: 'blur' },
             { validator: (rule, value, callback) => {
                 const names = this.telegramSettings.channels.map((item) => item.name);
                 if (names.filter((name) => name === value).length > 1) {
-                    callback(new Error('渠道名不能重复'));
+                    callback(new Error(this.$t('uploadChannel.channelNameDuplicate')));
                 } else if (value === 'Telegram_env') {
-                    // 判断该渠道保存位置是否为环境变量
                     const savePath = this.telegramSettings.channels.find((item) => item.name === value).savePath;
                     if (savePath !== 'environment variable') {
-                        callback(new Error('渠道名不能为保留值'));
+                        callback(new Error(this.$t('uploadChannel.channelNameReserved')));
                     } else {
                         callback();
                     }
@@ -433,10 +432,10 @@ data() {
             }, trigger: 'blur' }
         ],
         botToken: [
-            { required: true, message: '请输入 Bot Token', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.botTokenRequired'), trigger: 'blur' }
         ],
         chatId: [
-            { required: true, message: '请输入 Chat ID', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.chatIdRequired'), trigger: 'blur' }
         ]
     },
 
@@ -465,15 +464,15 @@ data() {
 
     huggingfaceRules: {
         name: [
-            { required: true, message: '请输入渠道名', trigger: 'blur' },
+            { required: true, message: this.$t('uploadChannel.channelNameRequired'), trigger: 'blur' },
             { validator: (rule, value, callback) => {
                 const names = this.huggingfaceSettings.channels.map((item) => item.name);
                 if (names.filter((name) => name === value).length > 1) {
-                    callback(new Error('渠道名不能重复'));
+                    callback(new Error(this.$t('uploadChannel.channelNameDuplicate')));
                 } else if (value === 'HuggingFace_env') {
                     const savePath = this.huggingfaceSettings.channels.find((item) => item.name === value).savePath;
                     if (savePath !== 'environment variable') {
-                        callback(new Error('渠道名不能为保留值'));
+                        callback(new Error(this.$t('uploadChannel.channelNameReserved')));
                     } else {
                         callback();
                     }
@@ -483,24 +482,24 @@ data() {
             }, trigger: 'blur' }
         ],
         token: [
-            { required: true, message: '请输入 Access Token', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.accessTokenRequired'), trigger: 'blur' }
         ],
         repo: [
-            { required: true, message: '请输入仓库名', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.repoNameRequired'), trigger: 'blur' }
         ]
     },
 
     discordRules: {
         name: [
-            { required: true, message: '请输入渠道名', trigger: 'blur' },
+            { required: true, message: this.$t('uploadChannel.channelNameRequired'), trigger: 'blur' },
             { validator: (rule, value, callback) => {
                 const names = this.discordSettings.channels.map((item) => item.name);
                 if (names.filter((name) => name === value).length > 1) {
-                    callback(new Error('渠道名不能重复'));
+                    callback(new Error(this.$t('uploadChannel.channelNameDuplicate')));
                 } else if (value === 'Discord_env') {
                     const savePath = this.discordSettings.channels.find((item) => item.name === value).savePath;
                     if (savePath !== 'environment variable') {
-                        callback(new Error('渠道名不能为保留值'));
+                        callback(new Error(this.$t('uploadChannel.channelNameReserved')));
                     } else {
                         callback();
                     }
@@ -510,10 +509,10 @@ data() {
             }, trigger: 'blur' }
         ],
         botToken: [
-            { required: true, message: '请输入 Bot Token', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.botTokenRequired'), trigger: 'blur' }
         ],
         channelId: [
-            { required: true, message: '请输入 Channel ID', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.channelIdRequired'), trigger: 'blur' }
         ]
     },
 
@@ -523,16 +522,15 @@ data() {
 
     s3Rules: {
         name: [
-            { required: true, message: '请输入渠道名', trigger: 'blur' },
+            { required: true, message: this.$t('uploadChannel.channelNameRequired'), trigger: 'blur' },
             { validator: (rule, value, callback) => {
                 const names = this.s3Settings.channels.map((item) => item.name);
                 if (names.filter((name) => name === value).length > 1) {
-                    callback(new Error('渠道名不能重复'));
+                    callback(new Error(this.$t('uploadChannel.channelNameDuplicate')));
                 } else if (value === 'S3_env') {
-                    // 判断该渠道保存位置是否为环境变量
                     const savePath = this.s3Settings.channels.find((item) => item.name === value).savePath;
                     if (savePath !== 'environment variable') {   
-                        callback(new Error('渠道名不能为保留值'));
+                        callback(new Error(this.$t('uploadChannel.channelNameReserved')));
                     } else {
                         callback();
                     }
@@ -542,19 +540,19 @@ data() {
             }, trigger: 'blur' }
         ],
         endpoint: [
-            { required: true, message: '请输入 Endpoint', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.endpointRequired'), trigger: 'blur' }
         ],
         bucketName: [
-            { required: true, message: '请输入存储桶名称', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.bucketNameRequired'), trigger: 'blur' }
         ],
         region: [
-            { required: true, message: '请输入存储桶区域', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.regionRequired'), trigger: 'blur' }
         ],
         accessKeyId: [
-            { required: true, message: '请输入访问密钥 ID', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.accessKeyIdRequired'), trigger: 'blur' }
         ],
         secretAccessKey: [
-            { required: true, message: '请输入机密访问密钥', trigger: 'blur' }
+            { required: true, message: this.$t('uploadChannel.secretAccessKeyRequired'), trigger: 'blur' }
         ]
     },
 
@@ -588,15 +586,7 @@ methods: {
                 });
                 break;
             case 'cfr2':
-                // this.cfr2Settings.channels.push({
-                //     id: this.cfr2Settings.channels.length + 1,
-                //     name: '',
-                //     type: 'cfr2',
-                //     savePath: 'database',
-                //     enabled: true,
-                //     fixed: false
-                // });
-                this.$message.error('R2渠道请通过绑定 R2 存储桶或通过 S3 渠道添加');
+                this.$message.error(this.$t('uploadChannel.r2AddTip'));
                 break;
             case 's3':
                 this.s3Settings.channels.push({
@@ -651,7 +641,6 @@ methods: {
     deleteChannel(index) {
         switch (this.activeChannel) {
             case 'telegram':
-                // 调整 id
                 this.telegramSettings.channels.forEach((item, i) => {
                     if (i > index) {
                         item.id -= 1;
@@ -660,7 +649,6 @@ methods: {
                 this.telegramSettings.channels.splice(index, 1);
                 break;
             case 'cfr2':
-                // 调整 id
                 this.cfr2Settings.channels.forEach((item, i) => {
                     if (i > index) {
                         item.id -= 1;
@@ -669,7 +657,6 @@ methods: {
                 this.cfr2Settings.channels.splice(index, 1);
                 break;
             case 's3':
-                // 调整 id
                 this.s3Settings.channels.forEach((item, i) => {
                     if (i > index) {
                         item.id -= 1;
@@ -678,7 +665,6 @@ methods: {
                 this.s3Settings.channels.splice(index, 1);
                 break;
             case 'discord':
-                // 调整 id
                 this.discordSettings.channels.forEach((item, i) => {
                     if (i > index) {
                         item.id -= 1;
@@ -687,7 +673,6 @@ methods: {
                 this.discordSettings.channels.splice(index, 1);
                 break;
             case 'huggingface':
-                // 调整 id
                 this.huggingfaceSettings.channels.forEach((item, i) => {
                     if (i > index) {
                         item.id -= 1;
@@ -698,10 +683,8 @@ methods: {
         }
     },
     saveSettings() {
-        // 所有表单的 Promise 数组
         let validationPromises = [];
 
-        // Telegram
         if (this.$refs.tgChannelForm) {
             this.$refs.tgChannelForm.forEach((form) => {
                 validationPromises.push(new Promise((resolve) => {
@@ -710,7 +693,6 @@ methods: {
             });
         }
 
-        // S3
         if (this.$refs.s3ChannelForm) {
             this.$refs.s3ChannelForm.forEach((form) => {
                 validationPromises.push(new Promise((resolve) => {
@@ -719,7 +701,6 @@ methods: {
             });
         }
 
-        // Discord
         if (this.$refs.discordChannelForm) {
             this.$refs.discordChannelForm.forEach((form) => {
                 validationPromises.push(new Promise((resolve) => {
@@ -728,7 +709,6 @@ methods: {
             });
         }
 
-        // HuggingFace
         if (this.$refs.huggingfaceChannelForm) {
             this.$refs.huggingfaceChannelForm.forEach((form) => {
                 validationPromises.push(new Promise((resolve) => {
@@ -737,7 +717,6 @@ methods: {
             });
         }
 
-        // 等待所有验证完成
         Promise.all(validationPromises).then((results) => {
             const isValid = results.every(valid => valid);
 
@@ -745,7 +724,6 @@ methods: {
                 return;
             }
 
-            // 保存设置
             const settings = {
                 telegram: this.telegramSettings,
                 cfr2: this.cfr2Settings,
@@ -761,15 +739,13 @@ methods: {
                 body: JSON.stringify(settings)
             })
             .then(() => {
-                this.$message.success('设置已保存');
+                this.$message.success(this.$t('message.settingsSaved'));
             });
         });
     },
-    // 获取容量统计（重新计算）
     async refreshQuota() {
         this.quotaLoading = true;
         try {
-            // 使用 POST 请求重新统计容量（会触发索引重建）
             const response = await fetchWithAuth('/api/manage/quota', {
                 method: 'POST'
             });
@@ -777,7 +753,6 @@ methods: {
             if (data.success) {
                 this.quotaStats = data.channelStats || {};
             } else {
-                // 如果重新统计失败，尝试获取已有数据
                 const getResponse = await fetchWithAuth('/api/manage/quota');
                 const getData = await getResponse.json();
                 if (getData.success) {
@@ -790,7 +765,6 @@ methods: {
             this.quotaLoading = false;
         }
     },
-    // 获取容量统计（仅读取，不重建索引）
     async loadQuotaStats() {
         try {
             const response = await fetchWithAuth('/api/manage/quota');
@@ -802,20 +776,17 @@ methods: {
             console.error('Failed to load quota stats:', error);
         }
     },
-    // 获取渠道已用容量 (GB)
     getChannelUsedGB(channel) {
         const stats = this.quotaStats[channel.name];
         if (!stats) return 0;
         return (stats.usedMB || 0) / 1024;
     },
-    // 获取容量百分比
     getQuotaPercentage(channel) {
         const usedGB = this.getChannelUsedGB(channel);
         const limitGB = channel.quota?.limitGB || 10;
         const percentage = (usedGB / limitGB) * 100;
         return Math.min(100, Math.round(percentage * 10) / 10);
     },
-    // 获取进度条状态
     getQuotaStatus(channel) {
         const percentage = this.getQuotaPercentage(channel);
         const threshold = channel.quota?.threshold || 95;
@@ -823,71 +794,64 @@ methods: {
         if (percentage >= 80) return 'warning';
         return 'success';
     },
-    // 获取容量文本
     getQuotaText(channel) {
         const usedGB = this.getChannelUsedGB(channel);
         const limitGB = channel.quota?.limitGB || 10;
-        return `${usedGB.toFixed(2)} / ${limitGB} GB`;
+        return `${this.$t('uploadChannel.quotaUsed')} ${usedGB.toFixed(2)} ${this.$t('uploadChannel.quotaOf')} ${limitGB} GB`;
     },
-    // 判断是否超过阈值
     isQuotaExceeded(channel) {
         const percentage = this.getQuotaPercentage(channel);
         const threshold = channel.quota?.threshold || 95;
         return percentage >= threshold;
     },
-    // 获取状态文本
     getQuotaStatusText(channel) {
         const percentage = this.getQuotaPercentage(channel);
         const threshold = channel.quota?.threshold || 95;
         if (percentage >= threshold) {
-            return `⚠️ 已达到容量阈值 (${threshold}%)，渠道写入已暂停`;
+            return `⚠️ ${this.$t('uploadChannel.quotaStatusExceeded')} (${threshold}%)`;
         }
         if (percentage >= 80) {
-            return `⚡ 容量使用较高，接近阈值`;
+            return `⚡ ${this.$t('uploadChannel.quotaStatusWarning')}`;
         }
-        return `✓ 容量正常`;
+        return `✓ ${this.$t('uploadChannel.quotaStatusNormal')}`;
     },
-    // 容量限制开关变化时
     async onQuotaEnabledChange(enabled, channel) {
         if (enabled && channel.name) {
-            // 首次启用时，检查是否有该渠道的统计数据
             const stats = this.quotaStats[channel.name];
             if (!stats) {
-                // 没有统计数据，提示用户需要重新统计
                 this.$confirm(
-                    '首次启用容量限制需要统计现有文件容量，这可能需要一些时间。是否立即统计？',
-                    '初始化容量统计',
+                    this.$t('message.quotaInitConfirm'),
+                    this.$t('message.quotaInitTitle'),
                     {
-                        confirmButtonText: '立即统计',
-                        cancelButtonText: '稍后手动统计',
+                        confirmButtonText: this.$t('message.quotaInitNow'),
+                        cancelButtonText: this.$t('message.quotaInitLater'),
                         type: 'info'
                     }
                 ).then(async () => {
                     await this.recalculateQuota();
                 }).catch(() => {
-                    this.$message.info('您可以稍后点击刷新按钮手动统计');
+                    this.$message.info(this.$t('message.quotaInitLaterTip'));
                 });
             }
         }
     },
-    // 重新统计容量
     async recalculateQuota() {
         this.quotaLoading = true;
         try {
-            this.$message.info('正在统计容量，请稍候...');
+            this.$message.info(this.$t('message.quotaCalculating'));
             const response = await fetchWithAuth('/api/manage/quota', {
                 method: 'POST'
             });
             const data = await response.json();
             if (data.success) {
                 this.quotaStats = data.channelStats || {};
-                this.$message.success('容量统计完成');
+                this.$message.success(this.$t('message.quotaCalculateSuccess'));
             } else {
-                this.$message.error('统计失败: ' + (data.error || '未知错误'));
+                this.$message.error(this.$t('message.quotaCalculateFailed') + ': ' + (data.error || ''));
             }
         } catch (error) {
             console.error('Failed to recalculate quota:', error);
-            this.$message.error('统计失败');
+            this.$message.error(this.$t('message.quotaCalculateFailed'));
         } finally {
             this.quotaLoading = false;
         }
@@ -896,12 +860,10 @@ methods: {
 },
 mounted() {
     this.loading = true;
-    // 获取上传设置
     fetchWithAuth('/api/manage/sysConfig/upload')
     .then((response) => response.json())
     .then((data) => {
         this.telegramSettings = data.telegram;
-        // 确保 R2 渠道有 quota 默认值
         if (data.cfr2 && data.cfr2.channels) {
             data.cfr2.channels = data.cfr2.channels.map(channel => ({
                 ...channel,
@@ -909,7 +871,6 @@ mounted() {
             }));
         }
         this.cfr2Settings = data.cfr2;
-        // 确保 S3 渠道有 quota 默认值
         if (data.s3 && data.s3.channels) {
             data.s3.channels = data.s3.channels.map(channel => ({
                 ...channel,
@@ -917,7 +878,6 @@ mounted() {
             }));
         }
         this.s3Settings = data.s3;
-        // 确保 Discord 渠道有默认值
         if (data.discord && data.discord.channels) {
             data.discord.channels = data.discord.channels.map(channel => ({
                 ...channel,
@@ -925,7 +885,6 @@ mounted() {
             }));
         }
         this.discordSettings = data.discord || { loadBalance: {}, channels: [] };
-        // 确保 HuggingFace 渠道有默认值
         if (data.huggingface && data.huggingface.channels) {
             data.huggingface.channels = data.huggingface.channels.map(channel => ({
                 ...channel,
@@ -933,7 +892,6 @@ mounted() {
             }));
         }
         this.huggingfaceSettings = data.huggingface || { loadBalance: {}, channels: [] };
-        // 加载容量统计（仅读取，不重建索引）
         this.loadQuotaStats();
     })
     .finally(() => {
@@ -960,7 +918,6 @@ mounted() {
     margin-bottom: 16px;
 }
 
-/* 渠道切换按钮组美化 */
 .upload-channel :deep(.el-radio-group) {
     display: flex;
     gap: 12px;
@@ -1012,7 +969,6 @@ mounted() {
     margin-top: 20px;
 }
 
-/* 表单样式 - 上下排列左对齐 */
 .channel-form {
     margin-bottom: 30px;
     padding: 20px;
@@ -1060,7 +1016,6 @@ mounted() {
     padding: 10px 20px;
 }
 
-/* 容量状态样式 */
 .quota-status {
     width: 100%;
     max-width: 400px;
@@ -1088,7 +1043,6 @@ mounted() {
     font-weight: 500;
 }
 
-/* Discord 限制提示 */
 .discord-limit-tip {
     font-size: 13px;
     color: var(--el-color-info);
@@ -1098,7 +1052,6 @@ mounted() {
     border-left: 3px solid var(--el-color-info);
 }
 
-/* Discord 频率限制警告 */
 .discord-rate-limit-tip {
     font-size: 13px;
     color: var(--el-color-warning);
@@ -1108,7 +1061,6 @@ mounted() {
     border-left: 3px solid var(--el-color-warning);
 }
 
-/* HuggingFace 提示 */
 .huggingface-tip {
     font-size: 13px;
     color: var(--el-color-info);
@@ -1119,7 +1071,6 @@ mounted() {
     white-space: nowrap;
 }
 
-/* 移动端适配 */
 @media (max-width: 768px) {
     .upload-settings {
         padding: 15px;

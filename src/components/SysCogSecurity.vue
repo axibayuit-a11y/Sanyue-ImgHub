@@ -2,48 +2,48 @@
     <div class="security-settings" v-loading="loading">
         <!-- 一级设置：认证管理 -->
         <div class="first-settings">
-            <h3 class="first-title">认证管理</h3>
+            <h3 class="first-title">{{ $t('security.authManagement') }}</h3>
 
-            <h4 class="second-title">用户端认证</h4>
+            <h4 class="second-title">{{ $t('security.userAuth') }}</h4>
             <el-form 
                 :model="authSettings.user" 
                 :rules = "userPassRules"
                 ref = "userPassForm"
                 label-width="120px"
             >
-                <el-form-item label="上传密码" prop="authCode">
+                <el-form-item :label="$t('security.uploadPassword')" prop="authCode">
                     <el-input v-model="authSettings.user.authCode" type="password" show-password @input="handleUserPassInput" autocomplete="new-password"/>
                 </el-form-item>
 
                 <transition name="fade-slide" mode="out-in">
-                    <el-form-item label="确认密码" prop="confirmNewUserPassword" v-if="showUserPassConfirm" key="user-confirm">
+                    <el-form-item :label="$t('security.confirmPassword')" prop="confirmNewUserPassword" v-if="showUserPassConfirm" key="user-confirm">
                         <el-input v-model="authSettings.user.confirmNewUserPassword" type="password" show-password autocomplete="new-password"/>
                     </el-form-item>
                 </transition>
             </el-form>
             
-            <h4 class="second-title">管理端认证</h4>
+            <h4 class="second-title">{{ $t('security.adminAuth') }}</h4>
             <el-form 
                 :model="authSettings.admin"
                 :rules = "adminPassRules"
                 ref = "adminPassForm"
                 label-width="120px"
             >
-                <el-form-item label="用户名" prop="adminUsername">
+                <el-form-item :label="$t('security.username')" prop="adminUsername">
                     <el-input v-model="authSettings.admin.adminUsername" autocomplete="new-password"/>
                 </el-form-item>
-                <el-form-item label="密码" prop="adminPassword">
+                <el-form-item :label="$t('security.password')" prop="adminPassword">
                     <el-input v-model="authSettings.admin.adminPassword" type="password" show-password @input="handleAdminPassInput" autocomplete="new-password"/>
                 </el-form-item>
 
                 <transition name="fade-slide" mode="out-in">
-                    <el-form-item label="确认密码" prop="confirmNewAdminPassword" v-if="showAdminPassConfirm" key="admin-confirm">
+                    <el-form-item :label="$t('security.confirmPassword')" prop="confirmNewAdminPassword" v-if="showAdminPassConfirm" key="admin-confirm">
                         <el-input v-model="authSettings.admin.confirmNewAdminPassword" type="password" show-password autocomplete="new-password"/>
                     </el-form-item>
                 </transition>
             </el-form>
 
-            <h4 class="second-title token-title">API Token 管理
+            <h4 class="second-title token-title">{{ $t('security.apiTokenManagement') }}
                 <a class="token-actions">
                     <el-button type="primary" size="small" @click="showCreateTokenDialog = true" circle>
                         <font-awesome-icon icon="plus"/>
@@ -56,19 +56,19 @@
                     class="token-table"
                     v-loading="tokenLoading"
                 >
-                    <el-table-column prop="name" label="名称" header-align="center">
+                    <el-table-column prop="name" :label="$t('security.tokenName')" header-align="center">
                         <template #default="scope">
                             <div class="table-cell-content">{{ scope.row.name }}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="token" label="Token" header-align="center">
+                    <el-table-column prop="token" :label="$t('security.token')" header-align="center">
                         <template #default="scope">
                             <div class="table-cell-content">
                                 <span class="token-display">{{ scope.row.token }}</span>
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="permissions" label="权限" header-align="center">
+                    <el-table-column prop="permissions" :label="$t('security.permissions')" header-align="center">
                         <template #default="scope">
                             <div class="table-cell-content">
                                 <el-tag 
@@ -82,16 +82,16 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="createdAt" label="创建时间" header-align="center">
+                    <el-table-column prop="createdAt" :label="$t('security.createdAt')" header-align="center">
                         <template #default="scope">
                             <div class="table-cell-content">{{ formatDate(scope.row.createdAt) }}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" fixed="right" header-align="center">
+                    <el-table-column :label="$t('security.actions')" fixed="right" header-align="center">
                         <template #default="scope">
                             <div class="table-cell-content action-buttons">
-                                <el-button class="action-button" size="small" @click="editToken(scope.row)">编辑</el-button>
-                                <el-button class="action-button" size="small" type="danger" @click="deleteToken(scope.row.id)">删除</el-button>
+                                <el-button class="action-button" size="small" @click="editToken(scope.row)">{{ $t('security.edit') }}</el-button>
+                                <el-button class="action-button" size="small" type="danger" @click="deleteToken(scope.row.id)">{{ $t('security.delete') }}</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -101,26 +101,26 @@
 
         <!-- 一级设置：上传管理 -->
         <div class="first-settings">
-            <h3 class="first-title">上传管理</h3>            
-            <h4 class="second-title">图像审查
-                <el-tooltip content="仅对非分块上传文件生效，支持 nsfwjs 和 moderatecontent.com 渠道" placement="top">
+            <h3 class="first-title">{{ $t('security.uploadManagement') }}</h3>            
+            <h4 class="second-title">{{ $t('security.imageModeration') }}
+                <el-tooltip :content="$t('security.moderationTip')" placement="top">
                     <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                 </el-tooltip>
             </h4>         
             <el-form :model="uploadSettings.moderate" label-width="120px">
-                <el-form-item label="开启审查">
+                <el-form-item :label="$t('security.enableModeration')">
                     <el-switch v-model="uploadSettings.moderate.enabled"/>
                 </el-form-item>
-                <el-form-item label="审查渠道">
-                    <el-select v-model="uploadSettings.moderate.channel" placeholder="请选择审查渠道">
+                <el-form-item :label="$t('security.moderationChannel')">
+                    <el-select v-model="uploadSettings.moderate.channel" :placeholder="$t('security.selectChannel')">
                         <el-option label="moderatecontent.com" value="moderatecontent.com"></el-option>
                         <el-option label="nsfwjs" value="nsfwjs"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item v-if="uploadSettings.moderate.channel === 'moderatecontent.com'" label="API Key">
+                <el-form-item v-if="uploadSettings.moderate.channel === 'moderatecontent.com'" :label="$t('security.apiKey')">
                     <el-input v-model="uploadSettings.moderate.moderateContentApiKey"/>
                 </el-form-item>
-                <el-form-item v-if="uploadSettings.moderate.channel === 'nsfwjs'" label="API 路径">
+                <el-form-item v-if="uploadSettings.moderate.channel === 'nsfwjs'" :label="$t('security.apiPath')">
                     <el-input v-model="uploadSettings.moderate.nsfwApiPath" placeholder="https://nsfwjs.your.domain"/>
                 </el-form-item>
             </el-form>
@@ -128,25 +128,25 @@
 
         <!-- 一级设置：访问管理 -->
         <div class="first-settings">
-            <h3 class="first-title">访问管理</h3>
-            <h4 class="second-title">域名过滤</h4>
+            <h3 class="first-title">{{ $t('security.accessManagement') }}</h3>
+            <h4 class="second-title">{{ $t('security.domainFilter') }}</h4>
             <el-form :model="accessSettings" label-width="120px">
                 <el-form-item>
                     <template #label>
-                        放行域名
-                        <el-tooltip content="1.针对访问域名设置权限 <br/> 2.留空默认全部放行，多个域名请用英文逗号分隔" placement="top" raw-content>
+                        {{ $t('security.allowedDomains') }}
+                        <el-tooltip :content="$t('security.allowedDomainsTip')" placement="top" raw-content>
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
                     <el-input v-model="accessSettings.allowedDomains"/>
                 </el-form-item>
             </el-form>
-            <h4 class="second-title">白名单模式</h4>
+            <h4 class="second-title">{{ $t('security.whitelistMode') }}</h4>
             <el-form :model="accessSettings" label-width="120px">
                 <el-form-item>
                     <template #label>
-                        是否开启
-                        <el-tooltip content="1.针对文件设置权限 <br> 2.开启后，仅被加入白名单的文件可被访问" placement="top" raw-content>
+                        {{ $t('security.enableWhitelist') }}
+                        <el-tooltip :content="$t('security.whitelistTip')" placement="top" raw-content>
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
@@ -157,68 +157,68 @@
 
         <!-- 保存按钮 -->
         <div class="actions">
-            <el-button type="primary" @click="saveSettings">保存设置</el-button>
+            <el-button type="primary" @click="saveSettings">{{ $t('security.saveSettings') }}</el-button>
         </div>
 
         <!-- 创建Token对话框 -->
-        <el-dialog v-model="showCreateTokenDialog" title="创建新 API Token" :width="dialogWidth">
+        <el-dialog v-model="showCreateTokenDialog" :title="$t('security.createToken')" :width="dialogWidth">
             <el-form :model="newToken" :rules="tokenRules" ref="tokenForm" label-width="100px">
-                <el-form-item label="Token 名称" prop="name">
-                    <el-input v-model="newToken.name" placeholder="请输入Token名称"/>
+                <el-form-item :label="$t('security.tokenNameLabel')" prop="name">
+                    <el-input v-model="newToken.name" :placeholder="$t('security.tokenNamePlaceholder')"/>
                 </el-form-item>
-                <el-form-item label="权限" prop="permissions">
+                <el-form-item :label="$t('security.permissions')" prop="permissions">
                     <el-checkbox-group v-model="newToken.permissions">
-                        <el-checkbox label="upload">上传</el-checkbox>
-                        <el-checkbox label="delete">删除</el-checkbox>
-                        <el-checkbox label="list">列出</el-checkbox>
+                        <el-checkbox label="upload">{{ $t('security.permUpload') }}</el-checkbox>
+                        <el-checkbox label="delete">{{ $t('security.permDelete') }}</el-checkbox>
+                        <el-checkbox label="list">{{ $t('security.permList') }}</el-checkbox>
                     </el-checkbox-group>
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="showCreateTokenDialog = false">取消</el-button>
-                    <el-button type="primary" @click="createToken">创建</el-button>
+                    <el-button @click="showCreateTokenDialog = false">{{ $t('common.cancel') }}</el-button>
+                    <el-button type="primary" @click="createToken">{{ $t('security.create') }}</el-button>
                 </span>
             </template>
         </el-dialog>
 
         <!-- 编辑Token对话框 -->
-        <el-dialog v-model="showEditTokenDialog" title="编辑 API Token" :width="dialogWidth">
+        <el-dialog v-model="showEditTokenDialog" :title="$t('security.editToken')" :width="dialogWidth">
             <el-form :model="editingToken" :rules="tokenRules" ref="editTokenForm" label-width="100px">
-                <el-form-item label="Token 名称">
+                <el-form-item :label="$t('security.tokenNameLabel')">
                     <el-input v-model="editingToken.name" disabled/>
                 </el-form-item>
-                <el-form-item label="权限" prop="permissions">
+                <el-form-item :label="$t('security.permissions')" prop="permissions">
                     <el-checkbox-group v-model="editingToken.permissions">
-                        <el-checkbox label="upload">上传</el-checkbox>
-                        <el-checkbox label="delete">删除</el-checkbox>
-                        <el-checkbox label="list">列出</el-checkbox>
+                        <el-checkbox label="upload">{{ $t('security.permUpload') }}</el-checkbox>
+                        <el-checkbox label="delete">{{ $t('security.permDelete') }}</el-checkbox>
+                        <el-checkbox label="list">{{ $t('security.permList') }}</el-checkbox>
                     </el-checkbox-group>
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="showEditTokenDialog = false">取消</el-button>
-                    <el-button type="primary" @click="updateToken">更新</el-button>
+                    <el-button @click="showEditTokenDialog = false">{{ $t('common.cancel') }}</el-button>
+                    <el-button type="primary" @click="updateToken">{{ $t('security.update') }}</el-button>
                 </span>
             </template>
         </el-dialog>
 
         <!-- Token创建成功对话框 -->
-        <el-dialog v-model="showTokenResultDialog" title="Token 创建成功" :width="dialogWidth">
+        <el-dialog v-model="showTokenResultDialog" :title="$t('security.tokenCreatedTitle')" :width="dialogWidth">
             <div class="token-result">
                 <p style="margin-bottom: 15px; color: #e6a23c;">
                     <font-awesome-icon icon="exclamation-triangle" style="margin-right: 5px;"/>
-                    请妥善保存以下Token，关闭此窗口后将无法再次查看完整Token！
+                    {{ $t('security.tokenWarning') }}
                 </p>
                 <el-form label-width="100px">
-                    <el-form-item label="Token 名称">
+                    <el-form-item :label="$t('security.tokenNameLabel')">
                         <span>{{ createdToken.name }}</span>
                     </el-form-item>
-                    <el-form-item label="完整Token">
+                    <el-form-item :label="$t('security.fullToken')">
                         <el-input v-model="createdToken.token" readonly>
                             <template #append>
-                                <el-button @click="copyToken">复制</el-button>
+                                <el-button @click="copyToken">{{ $t('security.copy') }}</el-button>
                             </template>
                         </el-input>
                     </el-form-item>
@@ -226,7 +226,7 @@
             </div>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button type="primary" @click="showTokenResultDialog = false">我已保存</el-button>
+                    <el-button type="primary" @click="showTokenResultDialog = false">{{ $t('security.saved') }}</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -288,17 +288,17 @@ data() {
                     const hasReservedChar = urlReservedChars.some(char => value && value.includes(char));
                     
                     if (hasReservedChar) {
-                        callback(new Error('密码不能包含部分URL保留字符: % & ? # /'));
+                        callback(new Error(this.$t('security.passwordReservedChars')));
                     } else {
                         callback();
                     }
                 }, trigger: 'blur' }
             ],
             confirmNewUserPassword: [
-                { message: '请再次输入上传密码', trigger: 'blur' },
+                { message: this.$t('security.pleaseConfirmPassword'), trigger: 'blur' },
                 { validator: (rule, value, callback) => {
                     if (value && value !== this.authSettings.user.authCode) {
-                        callback(new Error('两次输入密码不一致'));
+                        callback(new Error(this.$t('security.passwordMismatch')));
                     } else {
                         callback();
                     }
@@ -308,10 +308,10 @@ data() {
 
         adminPassRules: {
             confirmNewAdminPassword: [
-                { message: '请再次输入管理密码', trigger: 'blur' },
+                { message: this.$t('security.pleaseConfirmAdminPassword'), trigger: 'blur' },
                 { validator: (rule, value, callback) => {
                     if (value && value !== this.authSettings.admin.adminPassword) {
-                        callback(new Error('两次输入密码不一致'));
+                        callback(new Error(this.$t('security.passwordMismatch')));
                     } else {
                         callback();
                     }
@@ -321,10 +321,10 @@ data() {
 
         tokenRules: {
             name: [
-                { required: true, message: '请输入Token名称', trigger: 'blur' }
+                { required: true, message: this.$t('security.tokenNameRequired'), trigger: 'blur' }
             ],
             permissions: [
-                { required: true, message: '请选择权限', trigger: 'change' }
+                { required: true, message: this.$t('security.permissionsRequired'), trigger: 'change' }
             ]
         }
     };
@@ -353,9 +353,9 @@ methods: {
     // Token相关方法
     getPermissionText(permission) {
         const permissionMap = {
-            'upload': '上传',
-            'delete': '删除', 
-            'list': '列出'
+            'upload': this.$t('security.permUpload'),
+            'delete': this.$t('security.permDelete'), 
+            'list': this.$t('security.permList')
         };
         return permissionMap[permission] || permission;
     },
@@ -371,7 +371,7 @@ methods: {
             const data = await response.json();
             this.apiTokens = data.tokens || [];
         } catch (error) {
-            this.$message.error('获取Token列表失败');
+            this.$message.error(this.$t('message.loadTagsFailed'));
         } finally {
             this.tokenLoading = false;
         }
@@ -402,12 +402,12 @@ methods: {
                     this.showTokenResultDialog = true;
                     this.newToken = { name: '', owner: '', permissions: [] };
                     await this.loadApiTokens();
-                    this.$message.success('Token创建成功');
+                    this.$message.success(this.$t('message.tokenCreated'));
                 } else {
-                    this.$message.error(data.error || 'Token创建失败');
+                    this.$message.error(data.error || this.$t('message.operationFailed'));
                 }
             } catch (error) {
-                this.$message.error('Token创建失败');
+                this.$message.error(this.$t('message.operationFailed'));
             }
         });
     },
@@ -443,21 +443,21 @@ methods: {
                 if (response.ok) {
                     this.showEditTokenDialog = false;
                     await this.loadApiTokens();
-                    this.$message.success('Token权限更新成功');
+                    this.$message.success(this.$t('message.tokenUpdated'));
                 } else {
-                    this.$message.error(data.error || 'Token更新失败');
+                    this.$message.error(data.error || this.$t('message.operationFailed'));
                 }
             } catch (error) {
-                this.$message.error('Token更新失败');
+                this.$message.error(this.$t('message.operationFailed'));
             }
         });
     },
     
     async deleteToken(tokenId) {
         try {
-            await this.$confirm('此操作将永久删除该Token，是否继续？', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
+            await this.$confirm(this.$t('security.deleteTokenConfirm'), this.$t('common.info'), {
+                confirmButtonText: this.$t('common.confirm'),
+                cancelButtonText: this.$t('common.cancel'),
                 type: 'warning'
             });
             
@@ -469,13 +469,13 @@ methods: {
             
             if (response.ok) {
                 await this.loadApiTokens();
-                this.$message.success('Token删除成功');
+                this.$message.success(this.$t('message.tokenDeleted'));
             } else {
-                this.$message.error(data.error || 'Token删除失败');
+                this.$message.error(data.error || this.$t('message.operationFailed'));
             }
         } catch (error) {
             if (error !== 'cancel') {
-                this.$message.error('Token删除失败');
+                this.$message.error(this.$t('message.operationFailed'));
             }
         }
     },
@@ -483,9 +483,9 @@ methods: {
     async copyToken() {
         try {
             await navigator.clipboard.writeText(this.createdToken.token);
-            this.$message.success('Token已复制到剪贴板');
+            this.$message.success(this.$t('message.tokenCopied'));
         } catch (error) {
-            this.$message.error('复制失败，请手动复制');
+            this.$message.error(this.$t('message.copyFailed'));
         }
     },
     
@@ -531,7 +531,7 @@ methods: {
                 },
                 body: JSON.stringify(settings)
             }).then(() => {
-                this.$message.success('设置已保存');
+                this.$message.success(this.$t('message.settingsSaved'));
                 // 更新原密码
                 this.oriUserPassword = this.authSettings.user.authCode;
                 this.oriAdminPassword = this.authSettings.admin.adminPassword;

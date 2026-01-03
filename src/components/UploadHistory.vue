@@ -2,16 +2,16 @@
     <div class="history-container" :class="{ 'active': show }">
         <div class="history-header">
             <div class="header-left">
-                <h2>历史记录</h2>
-                <span class="record-count">共 {{ historyList.length }} 条</span>
+                <h2>{{ $t('history.title') }}</h2>
+                <span class="record-count">{{ $t('history.totalRecords', { count: historyList.length }) }}</span>
             </div>
             <div class="header-right">
-                <el-tooltip content="切换视图" placement="bottom">
+                <el-tooltip :content="$t('history.switchView')" placement="bottom">
                     <el-button circle @click="toggleViewMode">
                         <font-awesome-icon :icon="viewMode === 'grid' ? 'list' : 'th-large'" />
                     </el-button>
                 </el-tooltip>
-                <el-tooltip content="清空记录" placement="bottom">
+                <el-tooltip :content="$t('history.clearRecords')" placement="bottom">
                     <el-button circle type="danger" @click="clearHistory">
                         <font-awesome-icon icon="trash-alt" />
                     </el-button>
@@ -94,7 +94,7 @@
         
         <div v-else class="empty-state">
             <font-awesome-icon icon="history" class="empty-icon" />
-            <p>暂无上传记录</p>
+            <p>{{ $t('history.noRecords') }}</p>
         </div>
     </div>
 </template>
@@ -164,20 +164,20 @@ export default {
             localStorage.setItem('historyViewMode', this.viewMode)
         },
         clearHistory() {
-            this.$confirm('确定要清空所有上传记录吗？', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
+            this.$confirm(this.$t('history.clearConfirm'), this.$t('common.info'), {
+                confirmButtonText: this.$t('common.confirm'),
+                cancelButtonText: this.$t('common.cancel'),
                 type: 'warning'
             }).then(() => {
                 this.historyList = []
                 localStorage.removeItem('uploadHistory')
-                this.$message.success('记录已清空')
+                this.$message.success(this.$t('message.recordCleared'))
             }).catch(() => {})
         },
         deleteItem(item) {
-            this.$confirm('确定要删除这条记录吗？', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
+            this.$confirm(this.$t('history.deleteConfirm'), this.$t('common.info'), {
+                confirmButtonText: this.$t('common.confirm'),
+                cancelButtonText: this.$t('common.cancel'),
                 type: 'warning'
             }).then(() => {
                 // Remove from list
@@ -188,7 +188,7 @@ export default {
                     const history = JSON.parse(localStorage.getItem('uploadHistory') || '[]')
                     const newHistory = history.filter(i => i.time !== item.time)
                     localStorage.setItem('uploadHistory', JSON.stringify(newHistory))
-                    this.$message.success('记录已删除')
+                    this.$message.success(this.$t('message.recordDeleted'))
                 } catch (e) {
                     console.error('Failed to update history', e)
                 }
@@ -219,9 +219,9 @@ export default {
         },
         copyLink(url) {
             navigator.clipboard.writeText(url).then(() => {
-                this.$message.success('链接已复制')
+                this.$message.success(this.$t('message.copySuccess'))
             }).catch(() => {
-                this.$message.error('复制失败')
+                this.$message.error(this.$t('message.copyFailed'))
             })
         },
         openLink(url) {

@@ -7,9 +7,9 @@
           <font-awesome-icon icon="database" />
         </div>
         <div class="card-content">
-          <div class="card-title">文件总数</div>
+          <div class="card-title">{{ $t('status.totalFiles') }}</div>
           <div class="card-value">{{ indexInfo.totalFiles?.toLocaleString() || '0' }}</div>
-          <div class="card-subtitle">点击刷新</div>
+          <div class="card-subtitle">{{ $t('status.clickToRefresh') }}</div>
         </div>
       </div>
 
@@ -18,7 +18,7 @@
           <font-awesome-icon icon="clock" />
         </div>
         <div class="card-content">
-          <div class="card-title">索引更新时间</div>
+          <div class="card-title">{{ $t('status.indexUpdateTime') }}</div>
           <div class="card-value">{{ formatTime(indexInfo.lastUpdated) }}</div>
           <div class="card-subtitle">{{ getTimeAgo(indexInfo.lastUpdated) }}</div>
         </div>
@@ -29,9 +29,9 @@
           <font-awesome-icon icon="code-branch" />
         </div>
         <div class="card-content">
-          <div class="card-title">系统版本</div>
+          <div class="card-title">{{ $t('status.systemVersion') }}</div>
           <div class="card-value">v{{ version }}</div>
-          <div class="card-subtitle">点击查看更新日志</div>
+          <div class="card-subtitle">{{ $t('status.clickToViewChangelog') }}</div>
         </div>
       </div>
     </div>
@@ -42,19 +42,19 @@
       <div class="chart-card">
         <div class="chart-header">
           <font-awesome-icon icon="share-alt" />
-          <span>上传渠道分布</span>
+          <span>{{ $t('status.channelDistribution') }}</span>
         </div>
         <div class="chart-content">
           <div v-if="Object.keys(indexInfo.channelStats || {}).length === 0" class="empty-state">
             <font-awesome-icon icon="inbox" />
-            <span>暂无数据</span>
+            <span>{{ $t('status.noData') }}</span>
           </div>
           <div v-else class="pie-chart-container">
             <div class="pie-chart-wrapper">
               <Doughnut :data="channelChartData" :options="chartOptions" />
               <div class="chart-center-text">
                 <div class="center-value">{{ indexInfo.totalFiles?.toLocaleString() || '0' }}</div>
-                <div class="center-label">文件总数</div>
+                <div class="center-label">{{ $t('status.totalFilesLabel') }}</div>
               </div>
             </div>
             <div class="chart-legend">
@@ -77,19 +77,19 @@
       <div class="chart-card">
         <div class="chart-header">
           <font-awesome-icon icon="file-alt" />
-          <span>文件状态分布</span>
+          <span>{{ $t('status.fileStatusDistribution') }}</span>
         </div>
         <div class="chart-content">
           <div v-if="Object.keys(indexInfo.typeStats || {}).length === 0" class="empty-state">
             <font-awesome-icon icon="inbox" />
-            <span>暂无数据</span>
+            <span>{{ $t('status.noData') }}</span>
           </div>
           <div v-else class="pie-chart-container">
             <div class="pie-chart-wrapper">
               <Doughnut :data="typeChartData" :options="chartOptions" />
               <div class="chart-center-text">
                 <div class="center-value">{{ Object.keys(indexInfo.typeStats).length }}</div>
-                <div class="center-label">状态类型</div>
+                <div class="center-label">{{ $t('status.statusTypes') }}</div>
               </div>
             </div>
             <div class="chart-legend">
@@ -99,7 +99,7 @@
                 class="legend-item"
               >
                 <span class="legend-color" :style="{ background: getTypeChartColor(index) }"></span>
-                <span class="legend-label">{{ type || '未知类型' }}</span>
+                <span class="legend-label">{{ type || $t('status.unknownType') }}</span>
                 <span class="legend-value">{{ count.toLocaleString() }}</span>
                 <span class="legend-percent">{{ getPercentage(count, indexInfo.totalFiles) }}%</span>
               </div>
@@ -114,11 +114,11 @@
       <div class="action-card">
         <div class="action-header">
           <font-awesome-icon icon="tools" />
-          <span>系统维护</span>
+          <span>{{ $t('status.systemMaintenance') }}</span>
         </div>
         <div class="action-content">
           <div class="action-buttons">
-            <el-tooltip content="重新扫描所有文件并更新索引数据，适用于数据不一致时的修复" placement="top">
+            <el-tooltip :content="$t('status.rebuildIndexTip')" placement="top">
               <el-button 
                 type="primary" 
                 :loading="rebuilding"
@@ -126,11 +126,11 @@
                 class="action-btn rebuild-btn"
               >
                 <font-awesome-icon icon="sync-alt" />
-                {{ rebuilding ? '重建中...' : '重建索引' }}
+                {{ rebuilding ? $t('status.rebuilding') : $t('status.rebuildIndex') }}
               </el-button>
             </el-tooltip>
 
-            <el-tooltip content="备份所有文件元数据和系统设置到JSON文件" placement="top">
+            <el-tooltip :content="$t('status.backupDataTip')" placement="top">
               <el-button 
                 type="success" 
                 :loading="backing"
@@ -138,11 +138,11 @@
                 class="action-btn backup-btn"
               >
                 <font-awesome-icon icon="download" />
-                {{ backing ? '备份中...' : '备份数据' }}
+                {{ backing ? $t('status.backing') : $t('status.backupData') }}
               </el-button>
             </el-tooltip>
 
-            <el-tooltip content="从备份文件恢复数据，将覆盖现有的文件元数据和系统设置" placement="top">
+            <el-tooltip :content="$t('status.restoreDataTip')" placement="top">
               <div class="restore-section">
                 <input 
                   type="file" 
@@ -158,7 +158,7 @@
                   class="action-btn restore-btn"
                 >
                   <font-awesome-icon icon="upload" />
-                  {{ restoring ? '恢复中...' : '恢复数据' }}
+                  {{ restoring ? $t('status.restoring') : $t('status.restoreData') }}
                 </el-button>
               </div>
             </el-tooltip>
@@ -197,7 +197,7 @@
           <div class="info-card-header">
             <div class="header-badge">
               <font-awesome-icon icon="arrow-up" />
-              <span>最近上传</span>
+              <span>{{ $t('status.latestUpload') }}</span>
             </div>
           </div>
           <div class="info-card-content">
@@ -239,7 +239,7 @@
           <div class="info-card-header">
             <div class="header-badge warning">
               <font-awesome-icon icon="arrow-down" />
-              <span>最早上传</span>
+              <span>{{ $t('status.oldestUpload') }}</span>
             </div>
           </div>
           <div class="info-card-content">
@@ -308,7 +308,7 @@ export default {
     typeChartData() {
       const stats = this.indexInfo.typeStats || {}
       return {
-        labels: Object.keys(stats).map(k => k || '未知类型'),
+        labels: Object.keys(stats).map(k => k || this.$t('status.unknownType')),
         datasets: [{
           data: Object.values(stats),
           backgroundColor: this.typeColors.slice(0, Object.keys(stats).length),
@@ -378,7 +378,7 @@ export default {
         }
       } catch (error) {
         console.error('获取索引信息失败:', error)
-        this.$message.error('获取索引信息失败')
+        this.$message.error(this.$t('message.operationFailed'))
       } finally {
         this.loading = false
       }
@@ -393,7 +393,7 @@ export default {
         })
         
         if (response.ok) {
-          this.$message.success('索引重建已启动，请稍后刷新查看最新状态')
+          this.$message.success(this.$t('message.indexRebuildStarted'))
           // 延迟刷新数据
           setTimeout(() => {
             this.fetchIndexInfo()
@@ -403,7 +403,7 @@ export default {
         }
       } catch (error) {
         console.error('重建索引失败:', error)
-        this.$message.error('重建索引失败')
+        this.$message.error(this.$t('message.operationFailed'))
       } finally {
         this.rebuilding = false
       }
@@ -429,14 +429,14 @@ export default {
           document.body.removeChild(a)
           window.URL.revokeObjectURL(url)
           
-          this.$message.success('备份文件已下载')
+          this.$message.success(this.$t('message.backupDownloaded'))
         } else {
           const errorData = await response.json()
           throw new Error(errorData.error || 'API请求失败')
         }
       } catch (error) {
         console.error('备份数据失败:', error)
-        this.$message.error('备份数据失败: ' + error.message)
+        this.$message.error(this.$t('message.operationFailed') + ': ' + error.message)
       } finally {
         this.backing = false
       }
@@ -461,11 +461,11 @@ export default {
       // 确认恢复操作
       try {
         await this.$confirm(
-          '恢复操作将覆盖现有的文件元数据和系统设置，此操作不可逆。确定要继续吗？',
-          '确认恢复',
+          this.$t('status.restoreConfirm'),
+          this.$t('status.restoreConfirmTitle'),
           {
-            confirmButtonText: '确定恢复',
-            cancelButtonText: '取消',
+            confirmButtonText: this.$t('status.confirmRestore'),
+            cancelButtonText: this.$t('common.cancel'),
             type: 'warning'
           }
         )
@@ -496,7 +496,7 @@ export default {
         if (response.ok) {
           const result = await response.json()
           this.$message.success(
-            `恢复完成！已恢复 ${result.stats.restoredFiles} 个文件和 ${result.stats.restoredSettings} 个设置项`
+            this.$t('message.restoreComplete', { files: result.stats.restoredFiles, settings: result.stats.restoredSettings })
           )
           // 刷新索引信息
           setTimeout(() => {
@@ -508,7 +508,7 @@ export default {
         }
       } catch (error) {
         console.error('恢复数据失败:', error)
-        this.$message.error('恢复数据失败: ' + error.message)
+        this.$message.error(this.$t('message.operationFailed') + ': ' + error.message)
       } finally {
         this.restoring = false
       }
@@ -542,10 +542,10 @@ export default {
       const hours = Math.floor(diff / 3600000)
       const days = Math.floor(diff / 86400000)
       
-      if (days > 0) return `${days}天前`
-      if (hours > 0) return `${hours}小时前`
-      if (minutes > 0) return `${minutes}分钟前`
-      return '刚刚'
+      if (days > 0) return this.$t('status.timeAgo.days', { n: days })
+      if (hours > 0) return this.$t('status.timeAgo.hours', { n: hours })
+      if (minutes > 0) return this.$t('status.timeAgo.minutes', { n: minutes })
+      return this.$t('status.timeAgo.justNow')
     },
     
     // 图片加载失败处理
