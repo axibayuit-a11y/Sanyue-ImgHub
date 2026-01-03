@@ -71,6 +71,7 @@
                 <el-tooltip :disabled="disableTooltip" :content="viewMode === 'card' ? $t('dashboard.listView') : $t('dashboard.cardView')" placement="bottom">
                     <font-awesome-icon :icon="viewMode === 'card' ? 'list' : 'th-large'" class="header-icon" @click="toggleViewMode"></font-awesome-icon>
                 </el-tooltip>
+                <LanguageSwitcher />
                 <el-tooltip :disabled="disableTooltip" :content="$t('nav.logout')" placement="bottom">
                     <font-awesome-icon icon="sign-out-alt" class="header-icon" @click="handleLogout"></font-awesome-icon>
                 </el-tooltip>
@@ -592,6 +593,7 @@ import JSZip from 'jszip';
 import DashboardTabs from '@/components/DashboardTabs.vue';
 import TagManagementDialog from '@/components/TagManagementDialog.vue';
 import BatchTagDialog from '@/components/BatchTagDialog.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import { fileManager } from '@/utils/fileManager';
 import fetchWithAuth from '@/utils/fetchWithAuth';
 
@@ -637,7 +639,8 @@ data() {
 components: {
     DashboardTabs,
     TagManagementDialog,
-    BatchTagDialog
+    BatchTagDialog,
+    LanguageSwitcher
 },
 computed: {
     ...mapGetters(['adminUrlSettings', 'userConfig']),

@@ -4,6 +4,7 @@
             <div class="header-content">
                 <DashboardTabs activeTab="customerConfig"></DashboardTabs>
                 <div class="header-action">
+                    <LanguageSwitcher />
                     <el-tooltip :disabled="disableTooltip" :content="$t('nav.logout')" placement="bottom">
                         <font-awesome-icon icon="sign-out-alt" class="header-icon" @click="handleLogout"></font-awesome-icon>
                     </el-tooltip>
@@ -79,6 +80,7 @@
 <script>
 import fetchWithAuth from '@/utils/fetchWithAuth';
 import DashboardTabs from '@/components/DashboardTabs.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 
 export default {
     name: 'CustomerConfig',
@@ -96,7 +98,8 @@ export default {
         }
     },
     components: {
-        DashboardTabs
+        DashboardTabs,
+        LanguageSwitcher
     },
     computed: {
         disableTooltip() {
