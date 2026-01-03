@@ -508,6 +508,46 @@ export default {
     saveSettings: '儲存設定',
   },
 
+  // 頁面配置（後端返回的配置項）
+  pageConfig: {
+    // 分類
+    globalSettings: '全域設定',
+    clientSettings: '用戶端設定',
+    adminSettings: '管理端設定',
+    otherSettings: '其他設定',
+    // 全域設定項
+    siteTitle: '網站標題',
+    siteIcon: '網站圖示',
+    ownerName: '圖床名稱',
+    logoUrl: '圖床Logo',
+    bkInterval: '背景切換間隔',
+    bkIntervalTip: '單位：毫秒 ms',
+    bkOpacity: '背景圖透明度',
+    bkOpacityTip: '0-1 之間的小數',
+    urlPrefix: '預設URL前綴',
+    urlPrefixTip: '自訂URL前綴，如：https://img.a.com/file/，留空則使用當前網域 <br/> 設定後將應用於用戶端和管理端',
+    // 用戶端設定項
+    announcement: '公告',
+    announcementTip: '支援HTML標籤',
+    defaultUploadChannel: '預設上傳頻道',
+    defaultUploadFolder: '預設上傳目錄',
+    defaultUploadFolderPlaceholder: '/ 開頭的合法目錄，不能包含特殊字元，預設為根目錄',
+    defaultUploadNameType: '預設命名方式',
+    namingOptions: [
+      { label: '預設', value: 'default' },
+      { label: '僅前綴', value: 'index' },
+      { label: '僅原名', value: 'origin' },
+      { label: '短連結', value: 'short' },
+    ],
+    loginBkImg: '登入頁背景圖',
+    uploadBkImg: '上傳頁背景圖',
+    bkImgTip: '1.填寫 bing 使用必應桌布輪播 <br/> 2.填寫 ["url1","url2"] 使用多張圖片輪播 <br/> 3.填寫 ["url"] 使用單張圖片',
+    footerLink: '頁尾傳送門連結',
+    disableFooter: '隱藏頁尾',
+    // 管理端設定項
+    adminLoginBkImg: '管理端登入頁背景圖',
+  },
+
   // 使用者管理
   customerConfig: {
     title: '使用者管理',

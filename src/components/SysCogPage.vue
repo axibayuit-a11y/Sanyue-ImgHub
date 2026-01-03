@@ -1,20 +1,20 @@
 <template>
     <div class="page-settings" v-loading="loading">
         <!-- 根据category分组显示设置 -->
-        <div v-for="(categoryGroup, categoryName) in groupedSettings" :key="categoryName" class="first-settings">
-            <h3 class="first-title">{{ categoryName }}</h3>
+        <div v-for="(categoryGroup, categoryKey) in groupedSettings" :key="categoryKey" class="first-settings">
+            <h3 class="first-title">{{ $t(categoryKey) }}</h3>
             <el-form :model="settings" label-width="150px">
                 <el-form-item v-for="(setting, index) in categoryGroup" :key="setting.id">
                     <template #label>
-                        {{ setting.label }}
-                        <el-tooltip v-if="setting.tooltip" :content="setting.tooltip" placement="top" raw-content>
+                        {{ $t(setting.labelKey) }}
+                        <el-tooltip v-if="setting.tooltipKey" :content="$t(setting.tooltipKey)" placement="top" raw-content>
                             <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
                         </el-tooltip>
                     </template>
                     <!-- 如果是select类型则使用下拉选择器 -->
                     <el-select v-if="setting.type === 'select'" v-model="setting.value" :disabled="setting.fixed" :placeholder="setting.placeholder" style="width: 100%">
                         <el-option
-                            v-for="option in setting.options"
+                            v-for="option in getOptions(setting)"
                             :key="option.value"
                             :label="option.label"
                             :value="option.value">
@@ -23,7 +23,7 @@
                     <!-- 如果是boolean类型则使用切换按钮 -->
                     <el-switch v-else-if="setting.type === 'boolean'" v-model="setting.value" :disabled="setting.fixed"></el-switch>
                     <!-- 否则使用输入框 -->
-                    <el-input v-else v-model="setting.value" :disabled="setting.fixed" :placeholder="setting.placeholder"></el-input>
+                    <el-input v-else v-model="setting.value" :disabled="setting.fixed" :placeholder="setting.placeholderKey ? $t(setting.placeholderKey) : setting.placeholder"></el-input>
                 </el-form-item>
             </el-form>
         </div>
@@ -50,22 +50,33 @@ data() {
     };
 },
 computed: {
-    // 根据category将配置项分组
+    // 根据categoryKey将配置项分组
     groupedSettings() {
         const grouped = {};
         if (this.settings.config) {
             this.settings.config.forEach(setting => {
-                const category = setting.category || '其他设置';
-                if (!grouped[category]) {
-                    grouped[category] = [];
+                const categoryKey = setting.categoryKey || 'pageConfig.otherSettings';
+                if (!grouped[categoryKey]) {
+                    grouped[categoryKey] = [];
                 }
-                grouped[category].push(setting);
+                grouped[categoryKey].push(setting);
             });
         }
         return grouped;
     }
 },
 methods: {
+    // 获取选项列表，支持 i18n
+    getOptions(setting) {
+        if (setting.optionsKey) {
+            // 从 i18n 获取翻译后的选项
+            const options = this.$t(setting.optionsKey);
+            if (Array.isArray(options)) {
+                return options;
+            }
+        }
+        return setting.options || [];
+    },
     saveSettings() {
         fetchWithAuth('/api/manage/sysConfig/page', {
             method: 'POST',

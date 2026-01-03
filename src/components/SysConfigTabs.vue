@@ -32,16 +32,16 @@ props: {
         default: false
     }
 },
-data() {
-    return {
-        menuItems: [
-            { index: 'status', icon: 'chart-bar', title: '系统状态' },
-            { index: 'upload', icon: 'cloud-upload', title: '上传设置' },
-            { index: 'security', icon: 'shield', title: '安全设置' },
-            { index: 'page', icon: 'pager', title: '网页设置' },
-            { index: 'others', icon: 'cog', title: '其他设置' }
+computed: {
+    menuItems() {
+        return [
+            { index: 'status', icon: 'chart-bar', title: this.$t('sysConfig.statusSettings') },
+            { index: 'upload', icon: 'cloud-upload', title: this.$t('sysConfig.uploadSettings') },
+            { index: 'security', icon: 'shield', title: this.$t('sysConfig.securitySettings') },
+            { index: 'page', icon: 'pager', title: this.$t('sysConfig.pageSettings') },
+            { index: 'others', icon: 'cog', title: this.$t('sysConfig.otherSettings') }
         ]
-    };
+    }
 },
 methods: {
     toggleCollapse() {

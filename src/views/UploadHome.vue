@@ -1,8 +1,9 @@
 <template>
     <div class="container">
     <div class="upload-home">
+        <!-- 左侧语言切换器（头像旁边） -->
+        <LanguageSwitcher class="language-switcher-left desktop-only"/>
         <!-- 桌面端按钮 -->
-        <LanguageSwitcher class="language-switcher desktop-only"/>
         <ToggleDark class="toggle-dark-button desktop-only"/>
         <el-tooltip :content="$t('nav.viewDocs')" placement="bottom" :disabled="disableTooltip">
             <a href="https://cfbed.sanyue.de/qa/" target="_blank" class="info-container">
@@ -650,11 +651,16 @@ export default {
     }
 }
 
-.language-switcher {
+.language-switcher-left {
     position: fixed;
     top: 30px;
-    right: 340px;
+    left: 100px;
     z-index: 100;
+    background-color: var(--toolbar-button-bg-color);
+    box-shadow: var(--toolbar-button-shadow);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 4px 8px;
 }
 
 .toggle-dark-button {

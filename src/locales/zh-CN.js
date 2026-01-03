@@ -508,6 +508,46 @@ export default {
     saveSettings: '保存设置',
   },
 
+  // 页面配置（后端返回的配置项）
+  pageConfig: {
+    // 分类
+    globalSettings: '全局设置',
+    clientSettings: '客户端设置',
+    adminSettings: '管理端设置',
+    otherSettings: '其他设置',
+    // 全局设置项
+    siteTitle: '网站标题',
+    siteIcon: '网站图标',
+    ownerName: '图床名称',
+    logoUrl: '图床Logo',
+    bkInterval: '背景切换间隔',
+    bkIntervalTip: '单位：毫秒 ms',
+    bkOpacity: '背景图透明度',
+    bkOpacityTip: '0-1 之间的小数',
+    urlPrefix: '默认URL前缀',
+    urlPrefixTip: '自定义URL前缀，如：https://img.a.com/file/，留空则使用当前域名 <br/> 设置后将应用于客户端和管理端',
+    // 客户端设置项
+    announcement: '公告',
+    announcementTip: '支持HTML标签',
+    defaultUploadChannel: '默认上传渠道',
+    defaultUploadFolder: '默认上传目录',
+    defaultUploadFolderPlaceholder: '/ 开头的合法目录，不能包含特殊字符，默认为根目录',
+    defaultUploadNameType: '默认命名方式',
+    namingOptions: [
+      { label: '默认', value: 'default' },
+      { label: '仅前缀', value: 'index' },
+      { label: '仅原名', value: 'origin' },
+      { label: '短链接', value: 'short' },
+    ],
+    loginBkImg: '登录页背景图',
+    uploadBkImg: '上传页背景图',
+    bkImgTip: '1.填写 bing 使用必应壁纸轮播 <br/> 2.填写 ["url1","url2"] 使用多张图片轮播 <br/> 3.填写 ["url"] 使用单张图片',
+    footerLink: '页脚传送门链接',
+    disableFooter: '隐藏页脚',
+    // 管理端设置项
+    adminLoginBkImg: '管理端登录页背景图',
+  },
+
   // 用户管理
   customerConfig: {
     title: '用户管理',

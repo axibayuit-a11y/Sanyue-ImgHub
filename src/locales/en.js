@@ -508,6 +508,46 @@ export default {
     saveSettings: 'Save Settings',
   },
 
+  // Page Config (backend returned config items)
+  pageConfig: {
+    // Categories
+    globalSettings: 'Global Settings',
+    clientSettings: 'Client Settings',
+    adminSettings: 'Admin Settings',
+    otherSettings: 'Other Settings',
+    // Global settings items
+    siteTitle: 'Site Title',
+    siteIcon: 'Site Icon',
+    ownerName: 'Site Name',
+    logoUrl: 'Site Logo',
+    bkInterval: 'Background Switch Interval',
+    bkIntervalTip: 'Unit: milliseconds (ms)',
+    bkOpacity: 'Background Opacity',
+    bkOpacityTip: 'Decimal between 0-1',
+    urlPrefix: 'Default URL Prefix',
+    urlPrefixTip: 'Custom URL prefix, e.g. https://img.a.com/file/, leave empty to use current domain <br/> Will apply to both client and admin',
+    // Client settings items
+    announcement: 'Announcement',
+    announcementTip: 'Supports HTML tags',
+    defaultUploadChannel: 'Default Upload Channel',
+    defaultUploadFolder: 'Default Upload Folder',
+    defaultUploadFolderPlaceholder: 'Valid path starting with /, no special characters, default is root',
+    defaultUploadNameType: 'Default Naming Method',
+    namingOptions: [
+      { label: 'Default', value: 'default' },
+      { label: 'Prefix Only', value: 'index' },
+      { label: 'Original Name', value: 'origin' },
+      { label: 'Short Link', value: 'short' },
+    ],
+    loginBkImg: 'Login Page Background',
+    uploadBkImg: 'Upload Page Background',
+    bkImgTip: '1. Enter "bing" for Bing wallpaper slideshow <br/> 2. Enter ["url1","url2"] for multiple images <br/> 3. Enter ["url"] for single image',
+    footerLink: 'Footer Portal Link',
+    disableFooter: 'Hide Footer',
+    // Admin settings items
+    adminLoginBkImg: 'Admin Login Background',
+  },
+
   // Customer Config
   customerConfig: {
     title: 'User Management',

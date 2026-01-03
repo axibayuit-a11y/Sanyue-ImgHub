@@ -508,6 +508,46 @@ export default {
     saveSettings: '設定を保存',
   },
 
+  // ページ設定（バックエンドから返される設定項目）
+  pageConfig: {
+    // カテゴリ
+    globalSettings: 'グローバル設定',
+    clientSettings: 'クライアント設定',
+    adminSettings: '管理者設定',
+    otherSettings: 'その他の設定',
+    // グローバル設定項目
+    siteTitle: 'サイトタイトル',
+    siteIcon: 'サイトアイコン',
+    ownerName: 'サイト名',
+    logoUrl: 'サイトロゴ',
+    bkInterval: '背景切替間隔',
+    bkIntervalTip: '単位：ミリ秒 (ms)',
+    bkOpacity: '背景の透明度',
+    bkOpacityTip: '0-1の小数',
+    urlPrefix: 'デフォルトURLプレフィックス',
+    urlPrefixTip: 'カスタムURLプレフィックス、例：https://img.a.com/file/、空欄で現在のドメインを使用 <br/> クライアントと管理者の両方に適用',
+    // クライアント設定項目
+    announcement: 'お知らせ',
+    announcementTip: 'HTMLタグをサポート',
+    defaultUploadChannel: 'デフォルトアップロードチャンネル',
+    defaultUploadFolder: 'デフォルトアップロードフォルダ',
+    defaultUploadFolderPlaceholder: '/で始まる有効なパス、特殊文字不可、デフォルトはルート',
+    defaultUploadNameType: 'デフォルト命名方式',
+    namingOptions: [
+      { label: 'デフォルト', value: 'default' },
+      { label: 'プレフィックスのみ', value: 'index' },
+      { label: '元の名前', value: 'origin' },
+      { label: '短縮リンク', value: 'short' },
+    ],
+    loginBkImg: 'ログインページ背景',
+    uploadBkImg: 'アップロードページ背景',
+    bkImgTip: '1. "bing"でBing壁紙スライドショー <br/> 2. ["url1","url2"]で複数画像 <br/> 3. ["url"]で単一画像',
+    footerLink: 'フッターポータルリンク',
+    disableFooter: 'フッターを非表示',
+    // 管理者設定項目
+    adminLoginBkImg: '管理者ログイン背景',
+  },
+
   // ユーザー管理
   customerConfig: {
     title: 'ユーザー管理',
