@@ -80,28 +80,28 @@
           <span>{{ $t('status.fileStatusDistribution') }}</span>
         </div>
         <div class="chart-content">
-          <div v-if="Object.keys(indexInfo.typeStats || {}).length === 0" class="empty-state">
+          <div v-if="Object.keys(combinedTypeStats).length === 0" class="empty-state">
             <font-awesome-icon icon="inbox" />
             <span>{{ $t('status.noData') }}</span>
           </div>
           <div v-else class="pie-chart-container">
             <div class="pie-chart-wrapper">
-              <Doughnut :data="typeChartData" :options="chartOptions" />
+              <Doughnut :data="combinedTypeChartData" :options="chartOptions" />
               <div class="chart-center-text">
-                <div class="center-value">{{ Object.keys(indexInfo.typeStats).length }}</div>
+                <div class="center-value">{{ Object.keys(combinedTypeStats).length }}</div>
                 <div class="center-label">{{ $t('status.statusTypes') }}</div>
               </div>
             </div>
             <div class="chart-legend">
               <div 
-                v-for="(count, type, index) in indexInfo.typeStats" 
+                v-for="(count, type, index) in combinedTypeStats" 
                 :key="type"
                 class="legend-item"
               >
-                <span class="legend-color" :style="{ background: getTypeChartColor(index) }"></span>
-                <span class="legend-label">{{ type || $t('status.unknownType') }}</span>
+                <span class="legend-color" :style="{ background: getCombinedTypeColor(index) }"></span>
+                <span class="legend-label">{{ type }}</span>
                 <span class="legend-value">{{ count.toLocaleString() }}</span>
-                <span class="legend-percent">{{ getPercentage(count, indexInfo.totalFiles) }}%</span>
+                <span class="legend-percent">{{ getPercentage(count, totalWithFederation) }}%</span>
               </div>
             </div>
           </div>
@@ -288,6 +288,10 @@ export default {
       // 状态图表颜色
       typeColors: [
         '#10B981', '#3B82F6', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4', '#84CC16'
+      ],
+      // 合并类型图表颜色（None=绿色, Block=红色, 联盟=紫色）
+      combinedTypeColors: [
+        '#10B981', '#EF4444', '#8B5CF6', '#F59E0B', '#3B82F6', '#EC4899', '#06B6D4', '#84CC16'
       ]
     }
   },
@@ -300,6 +304,38 @@ export default {
         datasets: [{
           data: Object.values(stats),
           backgroundColor: this.channelColors.slice(0, Object.keys(stats).length),
+          borderWidth: 0
+        }]
+      }
+    },
+    // 合并的类型统计（本地 None/Block + 联盟）
+    combinedTypeStats() {
+      const stats = {}
+      // 本地文件状态
+      const typeStats = this.indexInfo.typeStats || {}
+      for (const [type, count] of Object.entries(typeStats)) {
+        const label = type || 'None'
+        stats[label] = count
+      }
+      // 联盟文件数
+      const federationCount = this.indexInfo.federationStats?.totalFiles || 0
+      if (federationCount > 0) {
+        stats[this.$t('status.federationFiles')] = federationCount
+      }
+      return stats
+    },
+    // 总文件数（本地 + 联盟）
+    totalWithFederation() {
+      return (this.indexInfo.totalFiles || 0) + (this.indexInfo.federationStats?.totalFiles || 0)
+    },
+    // 合并类型图表数据
+    combinedTypeChartData() {
+      const stats = this.combinedTypeStats
+      return {
+        labels: Object.keys(stats),
+        datasets: [{
+          data: Object.values(stats),
+          backgroundColor: this.combinedTypeColors.slice(0, Object.keys(stats).length),
           borderWidth: 0
         }]
       }
@@ -361,6 +397,10 @@ export default {
     // 获取状态图表颜色
     getTypeChartColor(index) {
       return this.typeColors[index % this.typeColors.length]
+    },
+    // 获取合并类型图表颜色
+    getCombinedTypeColor(index) {
+      return this.combinedTypeColors[index % this.combinedTypeColors.length]
     },
     // 获取索引信息
     async fetchIndexInfo() {

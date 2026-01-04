@@ -90,6 +90,80 @@
                     <el-input v-model="settings.webDAV.password" :disabled="settings.webDAV.fixed" type="password" show-password autocomplete="new-password"></el-input>
                 </el-form-item>
             </el-form>
+
+            <!-- 联盟分布索引 -->
+            <h3 class="first-title">{{ $t('others.federation') }}
+                <el-tooltip placement="right" raw-content>
+                    <template #content>
+                        <div style="max-width: 320px; line-height: 1.6;">
+                            {{ $t('others.federationTip') }}
+                        </div>
+                    </template>
+                    <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
+                </el-tooltip>
+            </h3>
+            <el-form :model="settings.federation" label-width="120px">
+                <el-form-item :label="$t('others.enable')">
+                    <el-switch v-model="settings.federation.enabled"></el-switch>
+                </el-form-item>
+                <el-form-item>
+                    <template #label>
+                        <span>{{ $t('others.serverId') }}</span>
+                        <el-tooltip :content="$t('others.serverIdTip')" placement="right">
+                            <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
+                        </el-tooltip>
+                    </template>
+                    <el-input v-model="settings.federation.serverId" :placeholder="$t('others.serverIdPlaceholder')" :disabled="!settings.federation.enabled"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <template #label>
+                        <span>{{ $t('others.githubRepo') }}</span>
+                        <el-tooltip :content="$t('others.githubRepoTip')" placement="right">
+                            <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
+                        </el-tooltip>
+                    </template>
+                    <el-input v-model="settings.federation.githubRepo" :placeholder="$t('others.githubRepoPlaceholder')" :disabled="!settings.federation.enabled"></el-input>
+                </el-form-item>
+                <el-form-item :label="$t('others.githubToken')">
+                    <el-input v-model="settings.federation.githubToken" type="password" show-password autocomplete="new-password" placeholder="ghp_xxxx" :disabled="!settings.federation.enabled"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <template #label>
+                        <span>{{ $t('others.syncInterval') }}</span>
+                        <el-tooltip :content="$t('others.syncIntervalTip')" placement="right">
+                            <font-awesome-icon icon="question-circle" style="margin-left: 5px; cursor: pointer;"/>
+                        </el-tooltip>
+                    </template>
+                    <el-input-number v-model="settings.federation.syncInterval" :min="1" :max="168" :disabled="!settings.federation.enabled"></el-input-number>
+                    <span style="margin-left: 8px; color: var(--el-text-color-secondary);">{{ $t('others.hours') }}</span>
+                </el-form-item>
+                <el-form-item :label="$t('others.syncActions')">
+                    <el-button type="primary" @click="syncNow" :loading="syncing" :disabled="!settings.federation.enabled || !settings.federation.serverId">
+                        {{ $t('others.syncNow') }}
+                    </el-button>
+                    <el-button @click="testConnection" :loading="testing" :disabled="!settings.federation.enabled || !settings.federation.githubToken">
+                        {{ $t('others.testConnection') }}
+                    </el-button>
+                </el-form-item>
+                <el-form-item v-if="syncStatus.lastSync" :label="$t('others.lastSync')">
+                    <span style="color: var(--el-text-color-secondary);">{{ formatTime(syncStatus.lastSync) }}</span>
+                    <el-tag v-if="syncStatus.success" type="success" size="small" style="margin-left: 8px;">{{ $t('common.success') }}</el-tag>
+                    <el-tag v-else type="danger" size="small" style="margin-left: 8px;">{{ $t('common.failed') }}</el-tag>
+                </el-form-item>
+                <!-- 远程服务器列表 -->
+                <el-form-item v-if="federationStatus.remoteServers && federationStatus.remoteServers.length > 0" :label="$t('others.remoteServers')">
+                    <div class="remote-servers-list">
+                        <div v-for="server in federationStatus.remoteServers" :key="server.serverId" class="remote-server-item">
+                            <span class="server-name">{{ server.serverName || server.serverId }}</span>
+                            <span class="server-files">{{ server.fileCount }} {{ $t('common.files') }}</span>
+                            <span class="server-time">{{ formatTime(server.timestamp) }}</span>
+                        </div>
+                        <div class="remote-servers-total">
+                            {{ $t('others.totalRemoteFiles') }}: {{ federationStatus.totalRemoteFiles }}
+                        </div>
+                    </div>
+                </el-form-item>
+            </el-form>
         </div>
 
     
@@ -111,10 +185,27 @@ data() {
             randomImageAPI: {},
             cloudflareApiToken: {},
             webDAV: {},
-            publicBrowse: {}
+            publicBrowse: {},
+            federation: {
+                enabled: false,
+                serverId: '',
+                githubRepo: '',
+                githubToken: '',
+                syncInterval: 24
+            }
         },
         // 加载状态
-        loading: false
+        loading: false,
+        syncing: false,
+        testing: false,
+        syncStatus: {
+            lastSync: null,
+            success: false
+        },
+        federationStatus: {
+            remoteServers: [],
+            totalRemoteFiles: 0
+        }
     };
 },
 computed: {
@@ -129,15 +220,91 @@ methods: {
             body: JSON.stringify(this.settings)
         })
         .then(() => this.$message.success(this.$t('message.settingsSaved')));
+    },
+    async syncNow() {
+        this.syncing = true;
+        try {
+            const response = await fetchWithAuth('/api/manage/federation/sync', {
+                method: 'POST'
+            });
+            const result = await response.json();
+            if (result.success) {
+                // 显示详细同步结果
+                const uploadMsg = `${this.$t('others.uploadSuccess')}: ${result.upload?.fileCount || 0} ${this.$t('common.files')}`;
+                const downloadMsg = `${this.$t('others.downloadSuccess')}: ${result.download?.syncedServers || 0} ${this.$t('others.servers')}`;
+                this.$message.success(`${uploadMsg}, ${downloadMsg}`);
+                this.syncStatus.lastSync = Date.now();
+                this.syncStatus.success = true;
+                // 刷新联盟状态
+                this.fetchFederationStatus();
+            } else {
+                this.$message.error(result.error || this.$t('others.syncFailed'));
+                this.syncStatus.success = false;
+            }
+        } catch (error) {
+            this.$message.error(this.$t('others.syncFailed'));
+            this.syncStatus.success = false;
+        } finally {
+            this.syncing = false;
+        }
+    },
+    async testConnection() {
+        this.testing = true;
+        try {
+            const response = await fetchWithAuth('/api/manage/federation/test', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    githubToken: this.settings.federation.githubToken,
+                    githubRepo: this.settings.federation.githubRepo
+                })
+            });
+            const result = await response.json();
+            if (result.success) {
+                // 显示详细信息
+                const msg = result.repoExists 
+                    ? `${this.$t('others.connectionSuccess')} - ${result.repoName}`
+                    : `${this.$t('others.connectionSuccess')} - ${result.hint}`;
+                this.$message.success(msg);
+            } else {
+                this.$message.error(result.error || this.$t('others.connectionFailed'));
+            }
+        } catch (error) {
+            this.$message.error(this.$t('others.connectionFailed'));
+        } finally {
+            this.testing = false;
+        }
+    },
+    formatTime(timestamp) {
+        if (!timestamp) return '';
+        const date = new Date(timestamp);
+        return date.toLocaleString();
+    },
+    async fetchFederationStatus() {
+        try {
+            const response = await fetchWithAuth('/api/manage/federation/status');
+            const status = await response.json();
+            if (status.syncStatus) {
+                this.syncStatus.lastSync = status.syncStatus.lastSync;
+                this.syncStatus.success = status.syncStatus.uploadSuccess && status.syncStatus.downloadSuccess;
+            }
+            this.federationStatus = status;
+        } catch (error) {
+            console.error('Failed to fetch federation status:', error);
+        }
     }
 },
 mounted() {
     this.loading = true;
-    // 获取上传设置
+    // 获取其他设置
     fetchWithAuth('/api/manage/sysConfig/others')
     .then((response) => response.json())
     .then((data) => {
         this.settings = data;
+        // 如果联盟已启用，获取联盟状态
+        if (data.federation?.enabled) {
+            this.fetchFederationStatus();
+        }
     })
     .finally(() => {
         this.loading = false;
@@ -243,5 +410,47 @@ mounted() {
     .first-settings :deep(.el-form-item__content) {
         max-width: 100%;
     }
+}
+
+/* 远程服务器列表样式 */
+.remote-servers-list {
+    width: 100%;
+    max-width: 400px;
+}
+
+.remote-server-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    background: var(--el-fill-color);
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.server-name {
+    font-weight: 500;
+    color: var(--el-text-color-primary);
+    flex: 1;
+}
+
+.server-files {
+    color: var(--el-color-primary);
+    margin: 0 12px;
+}
+
+.server-time {
+    color: var(--el-text-color-secondary);
+    font-size: 12px;
+}
+
+.remote-servers-total {
+    padding: 8px 12px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+    border-top: 1px solid var(--el-border-color-lighter);
+    margin-top: 8px;
 }
 </style>

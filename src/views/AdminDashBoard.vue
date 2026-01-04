@@ -101,9 +101,10 @@
                         </el-breadcrumb-item>
                     </el-breadcrumb>
                 </div>
-                <span class="stats-badge" :title="`共 ${$data.Number} 个文件`">
-                    <font-awesome-icon icon="database" class="stats-badge-icon"/>
-                    {{ Number }}
+                <span class="stats-badge" :title="dataSourceTitle" @click="toggleDataSource">
+                    <font-awesome-icon :icon="dataSource === 'local' ? 'database' : 'globe'" class="stats-badge-icon"/>
+                    <span class="stats-badge-label">{{ dataSource === 'local' ? $t('status.localFiles') : $t('status.federationFiles') }}</span>
+                    {{ dataSource === 'local' ? Number : federationNumber }}
                 </span>
             </div>
             
@@ -601,6 +602,10 @@ export default {
 data() {
     return {
         Number: 0,
+        federationNumber: 0,  // 联盟文件数量
+        dataSource: 'local',  // 数据来源：local 或 federation
+        federationData: [],   // 联盟文件数据
+        federationServers: [], // 联盟服务器列表
         showLogoutButton: false,
         tableData: [],
         tempSearch: '',
@@ -644,6 +649,13 @@ components: {
 },
 computed: {
     ...mapGetters(['adminUrlSettings', 'userConfig']),
+    dataSourceTitle() {
+        if (this.dataSource === 'local') {
+            return `${this.$t('status.localFiles')}: ${this.Number} | ${this.$t('status.federationFiles')}: ${this.federationNumber} (${this.$t('common.clickToSwitch')})`;
+        } else {
+            return `${this.$t('status.federationFiles')}: ${this.federationNumber} | ${this.$t('status.localFiles')}: ${this.Number} (${this.$t('common.clickToSwitch')})`;
+        }
+    },
     filteredTableData() {
         return this.tableData;
     },
@@ -1261,6 +1273,64 @@ methods: {
             this.Number += num;
         }
     },
+    // 切换数据来源（本地/联盟）
+    async toggleDataSource() {
+        if (this.dataSource === 'local') {
+            // 切换到联盟
+            if (this.federationData.length === 0) {
+                await this.fetchFederationData();
+            }
+            if (this.federationNumber > 0) {
+                this.dataSource = 'federation';
+                this.showFederationData();
+            } else {
+                this.$message.info(this.$t('message.noFederationData'));
+            }
+        } else {
+            // 切换回本地
+            this.dataSource = 'local';
+            await this.fetchFileList();
+        }
+    },
+    // 获取联盟数据
+    async fetchFederationData() {
+        try {
+            const response = await fetchWithAuth('/api/manage/federation/status');
+            const status = await response.json();
+            
+            this.federationNumber = status.totalRemoteFiles || 0;
+            this.federationServers = status.remoteServers || [];
+            
+            // 如果有联盟数据，获取详细文件列表
+            if (this.federationNumber > 0) {
+                const filesResponse = await fetch('/api/public/federation?count=1000');
+                const filesData = await filesResponse.json();
+                this.federationData = filesData.files || [];
+            }
+        } catch (error) {
+            console.error('Error fetching federation data:', error);
+        }
+    },
+    // 显示联盟数据
+    showFederationData() {
+        // 转换联盟数据格式以匹配本地数据格式
+        const fileItems = this.federationData.map(file => ({
+            name: file.id,
+            isFolder: false,
+            selected: false,
+            isFederation: true,  // 标记为联盟文件
+            serverName: file.serverName,
+            serverUrl: file.serverUrl,
+            fileUrl: file.url,
+            metadata: {
+                ...file.metadata,
+                Channel: 'Federation',  // 标记渠道为联盟
+                ServerName: file.serverName
+            }
+        }));
+        
+        this.tableData = fileItems;
+    },
     sort(command) {
         this.sortOption = command;
     },
@@ -1830,6 +1900,10 @@ mounted() {
             // 首次加载时刷新文件列表
             return this.refreshFileList();
         })
+        .then(() => {
+            // 获取联盟统计数据（静默获取，不阻塞）
+            this.fetchFederationData();
+        })
         .catch((err) => {
             if (err.message !== 'Unauthorized') {
                 this.$message.error(this.$t('customerConfig.syncError'));
@@ -2012,6 +2086,7 @@ html.dark .header-content:hover {
     transition: all 0.2s ease;
     white-space: nowrap;
     flex-shrink: 0;
+    cursor: pointer;
 }
 
 .stats-badge:hover {
@@ -2025,6 +2100,11 @@ html.dark .header-content:hover {
     opacity: 0.8;
 }
 
+.stats-badge-label {
+    font-size: 11px;
+    opacity: 0.9;
+}
+
 @media (max-width: 768px) {
     .stats-badge {
         font-size: 10px;
@@ -2034,6 +2114,10 @@ html.dark .header-content:hover {
     
     .stats-badge-icon {
         font-size: 9px;
+    }
+    
+    .stats-badge-label {
+        display: none;
     }
 }
 
